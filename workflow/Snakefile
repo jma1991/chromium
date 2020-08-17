@@ -1,0 +1,68 @@
+# Author: James Ashmore
+# Copyright: Copyright 2020, James Ashmore
+# Email: jashmore@ed.ac.uk
+# License: MIT
+
+# Python modules
+import pandas as pd
+from snakemake.utils import validate
+
+# Configuration file
+configfile: "config/config.yaml"
+
+# Samples metadata
+samples = pd.read_table(config["samples"])
+samples = samples.set_index("sample", drop = False)
+#validate(samples, schema = "../schemas/samples.schema.yaml")
+
+# Units metadata
+units = pd.read_table(config["units"])
+units = units.set_index(["sample", "unit"], drop = False)
+#validate(units, schema = "../schemas/units.schema.yaml")
+
+include: "rules/genomepy.smk"
+include: "rules/busparse.smk"
+include: "rules/kallisto.smk"
+include: "rules/bustools.smk"
+
+include: "rules/eisar.smk"
+include: "rules/gffread.smk"
+include: "rules/salmon.smk"
+
+rule all:
+    input:
+        "results/genomepy/GRCm38.p6/GRCm38.p6.annotation.bed",
+        "results/genomepy/GRCm38.p6/GRCm38.p6.annotation.gtf",
+        "results/genomepy/GRCm38.p6/GRCm38.p6.fa",
+        "results/genomepy/GRCm38.p6/GRCm38.p6.fa.fai",
+        "results/genomepy/GRCm38.p6/GRCm38.p6.fa.sizes",
+        "results/genomepy/GRCm38.p6/GRCm38.p6.gaps.bed",
+        "results/genomepy/GRCm38.p6/README.txt",
+        "results/busparse/GRCm38.p6/cDNA_introns.fa",
+        "results/busparse/GRCm38.p6/cDNA_tx_to_capture.txt",
+        "results/busparse/GRCm38.p6/introns_tx_to_capture.txt",
+        "results/busparse/GRCm38.p6/tr2g.tsv",
+        "results/kallisto/index/GRCm38.p6.idx",
+        "results/kallisto/SI-GA-E1/matrix.ec",
+        "results/kallisto/SI-GA-E1/output.bus",
+        "results/kallisto/SI-GA-E1/run_info.json",
+        "results/kallisto/SI-GA-E1/transcripts.txt",
+        "results/bustools/SI-GA-E1/output.correct.bus",
+        "results/bustools/SI-GA-E1/output.correct.sort.bus",
+        "results/bustools/SI-GA-E1/output.correct.sort.spliced.bus",
+        "results/bustools/SI-GA-E1/output.correct.sort.unspliced.bus",
+        "results/bustools/SI-GA-E1/output.correct.sort.spliced.barcodes.txt",
+        "results/bustools/SI-GA-E1/output.correct.sort.spliced.genes.txt",
+        "results/bustools/SI-GA-E1/output.correct.sort.spliced.mtx",
+        "results/bustools/SI-GA-E1/output.correct.sort.unspliced.barcodes.txt",
+        "results/bustools/SI-GA-E1/output.correct.sort.unspliced.genes.txt",
+        "results/bustools/SI-GA-E1/output.correct.sort.unspliced.mtx",
+        "results/eisar/GRCm38.p6/GRCm38.p6.annotation.expanded.gtf",
+        "results/eisar/GRCm38.p6/GRCm38.p6.annotation.expanded.fa",
+        "results/eisar/GRCm38.p6/GRCm38.p6.annotation.expanded.tx2gene.tsv",
+        "results/salmon/genome/GRCm38.p6/gentrome.fa",
+        "results/salmon/genome/GRCm38.p6/decoys.txt",
+        "results/salmon/genome/GRCm38.p6/mrna.txt",
+        "results/salmon/genome/GRCm38.p6/rrna.txt",
+        "results/salmon/index/GRCm38.p6",
+        "results/salmon/alevin/SI-GA-E1"
