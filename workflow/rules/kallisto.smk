@@ -8,23 +8,29 @@ def kallisto_technology(wildcards):
 
 rule kallisto_index:
     input:
-        fas = "results/genomepy/{genome}/{genome}.fa"
+        fas = "results/busparse/{genome}/cDNA_introns.fa"
     output:
-        idx = "results/genomepy/{genome}/{genome}/index/kallisto/{genome}.idx"
+        idx = "results/kallisto/index/{genome}.idx"
     message:
         "[kallisto] Build kallisto index"
     conda:
         "../rules/kallisto.yaml"
     shell:
-        "kallisto index -i {output.idx} -k 31 {input.fas}"
+        "kallisto index -i {output.idx} {input.fas}"
 
 rule kallisto_bus:
     input:
-        idx = "results/genomepy/{genome}/{genome}/index/kallisto/{genome}.idx"
+        idx = "results/kallisto/index/GRCm38.p6.idx",
+        fq1 = lambda wildcards: units.loc[units['sample'] == wildcards.sample, "fq1"],
+        fq2 = lambda wildcards: units.loc[units['sample'] == wildcards.sample, "fq2"]
     output:
-        dir = directory("results/kallisto/{sample}")
+        ext = ["results/kallisto/{sample}/matrix.ec",
+               "results/kallisto/{sample}/output.bus",
+               "results/kallisto/{sample}/run_info.json",
+               "results/kallisto/{sample}/transcripts.txt"]
     params:
-        arg = ""
+        out = "results/kallisto/bus/{sample}",
+        fqz = lambda wildcards, input: [j for i in zip(input.fq1, input.fq2) for j in i]
     threads:
         16
     message:
@@ -32,4 +38,4 @@ rule kallisto_bus:
     conda:
         "../rules/kallisto.yaml"
     shell:
-        "kallisto bus -i {input.idx} -o {output.dir} -x {params.arg} -t {threads} {input.fas}"
+        "kallisto bus -i {input.idx} -o {params.out} -x 10xv3 -t {threads} {params.fqz}"
