@@ -22,12 +22,12 @@ rule star_solo:
         fq2 = lambda wildcards: units.loc[units["sample"] == wildcards.sample, "fq2"],
         txt = "workflow/resources/barcodes/3M-february-2018.txt"
     output:
-        "results/star/solo/{sample}"
+        dir = directory("results/star/solo/{sample}")
     params:
         fq1 = lambda wildcards, input: ",".join(input.fq1),
         fq2 = lambda wildcards, input: ",".join(input.fq2),
-        out = "results/star/solo/{sample}"
+        out = "results/star/solo/{sample}/"
     threads:
         16
     shell:
-        "STAR --runMode alignReads --runThreadN {threads} --genomeDir {input.idx} --sjdbGTFfile {input.gtf} --readFilesIn {params.fq2} {params.fq1} --readFilesCommand gunzip -c --outFileNamePrefix {params.out} --outSAMtype BAM SortedByCoordinate --twopassMode Basic --soloType CB_UMI_Simple --soloCBwhitelist {input.txt} --soloFeatures Gene Velocyto --soloCBstart 1 --soloCBlen 16 --soloUMIstart 17 --soloUMIlen 10 --soloBarcodeReadLength 26"
+        "STAR --runMode alignReads --runThreadN {threads} --genomeDir {input.idx} --sjdbGTFfile {input.gtf} --readFilesIn {params.fq2} {params.fq1} --readFilesCommand gunzip -c --outFileNamePrefix {params.out} --outSAMtype BAM SortedByCoordinate --twopassMode Basic --soloType CB_UMI_Simple --soloCBwhitelist {input.txt} --soloFeatures Gene Velocyto --soloCBstart 1 --soloCBlen 16 --soloUMIstart 17 --soloUMIlen 12 --soloBarcodeReadLength 151"

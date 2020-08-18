@@ -68,4 +68,5 @@ rule all:
         "results/salmon/genome/GRCm38.p6/rrna.txt",
         "results/salmon/index/GRCm38.p6",
         "results/salmon/alevin/SI-GA-E1",
+        "results/star/index/GRCm38.p6",
         "results/star/solo/SI-GA-E1"
