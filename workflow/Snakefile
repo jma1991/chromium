@@ -29,6 +29,8 @@ include: "rules/eisar.smk"
 include: "rules/gffread.smk"
 include: "rules/salmon.smk"
 
+include: "rules/star.smk"
+
 rule all:
     input:
         "results/genomepy/GRCm38.p6/GRCm38.p6.annotation.bed",
@@ -65,4 +67,5 @@ rule all:
         "results/salmon/genome/GRCm38.p6/mrna.txt",
         "results/salmon/genome/GRCm38.p6/rrna.txt",
         "results/salmon/index/GRCm38.p6",
-        "results/salmon/alevin/SI-GA-E1"
+        "results/salmon/alevin/SI-GA-E1",
+        "results/star/solo/SI-GA-E1"
