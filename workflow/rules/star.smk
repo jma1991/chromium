@@ -30,4 +30,4 @@ rule star_solo:
     threads:
         16
     shell:
-        "STAR --runMode alignReads --runThreadN {threads} --genomeDir {input.idx} --sjdbGTFfile {input.gtf} --readFilesIn {params.fq2} {params.fq1} --readFilesCommand gunzip -c --outFileNamePrefix {params.out} --outSAMtype BAM SortedByCoordinate --twopassMode Basic --soloType CB_UMI_Simple --soloCBwhitelist {input.txt} --soloFeatures Gene Velocyto --soloCBstart 1 --soloCBlen 16 --soloUMIstart 17 --soloUMIlen 12 --soloBarcodeReadLength 151"
+        "STAR --runMode alignReads --runThreadN {threads} --genomeDir {input.idx} --sjdbGTFfile {input.gtf} --readFilesIn {params.fq2} {params.fq1} --readFilesCommand gunzip -c --outFileNamePrefix {params.out} --outSAMtype BAM SortedByCoordinate --twopassMode Basic --soloType CB_UMI_Simple --soloCBwhitelist {input.txt} --soloFeatures Velocyto --soloCBstart 1 --soloCBlen 16 --soloUMIstart 17 --soloUMIlen 12 --soloBarcodeReadLength 151"
