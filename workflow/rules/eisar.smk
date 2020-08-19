@@ -10,6 +10,6 @@ rule eisar:
     output:
         gtf = "results/eisar/{genome}/{genome}.annotation.expanded.gtf",
         fas = "results/eisar/{genome}/{genome}.annotation.expanded.fa",
-        tsv = "results/eisar/{genome}/{genome}.annotation.expanded.tx2gene.tsv"
+        tsv = ["results/eisar/{genome}/{genome}.annotation.expanded.features.tsv", "results/eisar/{genome}/{genome}.annotation.expanded.tx2gene.tsv"]
     script:
         "../scripts/eisar.R"

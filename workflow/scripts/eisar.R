@@ -25,7 +25,11 @@ main <- function(input, output) {
 
     writeXStringSet(seq, filepath = output$fas)
 
-    dat <- getTx2Gene(rng, filepath = output$tsv)
+    # Write spliced and unspliced gene identifiers to disk
+    write.table(x = metadata(rng)$corrgene, file = output$tsv[1], row.names = FALSE, col.names = TRUE, quote = FALSE, sep = "\t")
+
+    # Write transcript and intron identifiers to disk
+    getTx2Gene(rng, filepath = output$tsv[2])
 
 }
 

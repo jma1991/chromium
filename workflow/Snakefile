@@ -61,6 +61,7 @@ rule all:
         "results/bustools/SI-GA-E1/output.correct.sort.unspliced.mtx",
         "results/eisar/GRCm38.p6/GRCm38.p6.annotation.expanded.gtf",
         "results/eisar/GRCm38.p6/GRCm38.p6.annotation.expanded.fa",
+        "results/eisar/GRCm38.p6/GRCm38.p6.annotation.expanded.features.tsv",
         "results/eisar/GRCm38.p6/GRCm38.p6.annotation.expanded.tx2gene.tsv",
         "results/salmon/genome/GRCm38.p6/gentrome.fa",
         "results/salmon/genome/GRCm38.p6/decoys.txt",
