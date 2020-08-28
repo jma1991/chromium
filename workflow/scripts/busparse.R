@@ -11,7 +11,9 @@ main <- function(input, params) {
         L = 91,
         Genome = readDNAStringSet(input$fas),
         out_path = params$dir,
-        style = "Ensembl"
+        style = "Ensembl",
+        transcript_version = NULL,
+        gene_version = NULL
     )
 
 }

@@ -1,0 +1,7 @@
+name: bioconductor-eisar
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bioconductor-eisar

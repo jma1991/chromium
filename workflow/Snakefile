@@ -21,18 +21,18 @@ units = units.set_index(["sample", "unit"], drop = False)
 #validate(units, schema = "../schemas/units.schema.yaml")
 
 include: "rules/genomepy.smk"
+include: "rules/gffread.smk"
 include: "rules/busparse.smk"
 include: "rules/kallisto.smk"
 include: "rules/bustools.smk"
-
 include: "rules/eisar.smk"
-include: "rules/gffread.smk"
 include: "rules/salmon.smk"
-
 include: "rules/star.smk"
+include: "rules/singlecellexperiment.smk"
 
 rule all:
     input:
+        # genomepy
         "results/genomepy/GRCm38.p6/GRCm38.p6.annotation.bed",
         "results/genomepy/GRCm38.p6/GRCm38.p6.annotation.gtf",
         "results/genomepy/GRCm38.p6/GRCm38.p6.fa",
@@ -40,15 +40,23 @@ rule all:
         "results/genomepy/GRCm38.p6/GRCm38.p6.fa.sizes",
         "results/genomepy/GRCm38.p6/GRCm38.p6.gaps.bed",
         "results/genomepy/GRCm38.p6/README.txt",
+        # gffread
+        "results/gffread/GRCm38.p6/GRCm38.p6.tx2gene.tsv",
+        "results/gffread/GRCm38.p6/GRCm38.p6.id2name.tsv",
+        "results/gffread/GRCm38.p6/GRCm38.p6.mrna.txt",
+        "results/gffread/GRCm38.p6/GRCm38.p6.rrna.txt",
+        # busparse
         "results/busparse/GRCm38.p6/cDNA_introns.fa",
         "results/busparse/GRCm38.p6/cDNA_tx_to_capture.txt",
         "results/busparse/GRCm38.p6/introns_tx_to_capture.txt",
         "results/busparse/GRCm38.p6/tr2g.tsv",
-        "results/kallisto/index/GRCm38.p6.idx",
+        # kallisto
+        "results/kallisto/GRCm38.p6.idx",
         "results/kallisto/SI-GA-E1/matrix.ec",
         "results/kallisto/SI-GA-E1/output.bus",
         "results/kallisto/SI-GA-E1/run_info.json",
         "results/kallisto/SI-GA-E1/transcripts.txt",
+        # bustools
         "results/bustools/SI-GA-E1/output.correct.bus",
         "results/bustools/SI-GA-E1/output.correct.sort.bus",
         "results/bustools/SI-GA-E1/output.correct.sort.spliced.bus",
@@ -59,15 +67,14 @@ rule all:
         "results/bustools/SI-GA-E1/output.correct.sort.unspliced.barcodes.txt",
         "results/bustools/SI-GA-E1/output.correct.sort.unspliced.genes.txt",
         "results/bustools/SI-GA-E1/output.correct.sort.unspliced.mtx",
-        "results/eisar/GRCm38.p6/GRCm38.p6.annotation.expanded.gtf",
-        "results/eisar/GRCm38.p6/GRCm38.p6.annotation.expanded.fa",
-        "results/eisar/GRCm38.p6/GRCm38.p6.annotation.expanded.features.tsv",
-        "results/eisar/GRCm38.p6/GRCm38.p6.annotation.expanded.tx2gene.tsv",
-        "results/salmon/genome/GRCm38.p6/gentrome.fa",
-        "results/salmon/genome/GRCm38.p6/decoys.txt",
-        "results/salmon/genome/GRCm38.p6/mrna.txt",
-        "results/salmon/genome/GRCm38.p6/rrna.txt",
+        # eisar
+        "results/eisar/GRCm38.p6/GRCm38.p6.annotation.gtf",
+        "results/eisar/GRCm38.p6/GRCm38.p6.fa",
+        "results/eisar/GRCm38.p6/GRCm38.p6.features.tsv",
+        "results/eisar/GRCm38.p6/GRCm38.p6.tx2gene.tsv",
+        # salmon
         "results/salmon/index/GRCm38.p6",
-        "results/salmon/alevin/SI-GA-E1",
+        "results/salmon/alevin/SI-GA-E1/alevin/quants_mat.gz",
+        # star
         "results/star/index/GRCm38.p6",
-        "results/star/solo/SI-GA-E1"
+        "results/star/solo/SI-GA-E1/Aligned.sortedByCoord.out.bam"

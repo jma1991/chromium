@@ -2,33 +2,32 @@
 
 main <- function(input, output) {
 
-    library(Biostrings)
-
-    library(eisaR)
-
-    library(GenomicFeatures)
-
-    library(Rsamtools)
+    suppressPackageStartupMessages({
+        library(Biostrings)
+        library(eisaR)
+        library(GenomicFeatures)
+        library(Rsamtools)
+    })
 
     rng <- getFeatureRanges(
         gtf = input$gtf,
         featureType = c("spliced", "intron"),
         intronType = "separate",
-        flankLength = 91,
+        flankLength = 90L,
         joinOverlappingIntrons = FALSE,
         verbose = TRUE
     )
-
-    exportToGtf(rng, filepath = output$gtf)
     
-    seq <- extractTranscriptSeqs(x = FaFile(input$fas), transcripts = rng)
+    fas <- FaFile(input$fas)
+
+    seq <- extractTranscriptSeqs(x = fas, transcripts = rng)
 
     writeXStringSet(seq, filepath = output$fas)
 
-    # Write spliced and unspliced gene identifiers to disk
-    write.table(x = metadata(rng)$corrgene, file = output$tsv[1], row.names = FALSE, col.names = TRUE, quote = FALSE, sep = "\t")
+    exportToGtf(rng, filepath = output$gtf)
 
-    # Write transcript and intron identifiers to disk
+    write.table(x = metadata(rng)$corrgene, file = output$tsv[1], quote = FALSE, row.names = FALSE, col.names = TRUE, sep = "\t")
+
     getTx2Gene(rng, filepath = output$tsv[2])
 
 }

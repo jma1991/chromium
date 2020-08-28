@@ -5,11 +5,11 @@
 
 rule eisar:
     input:
-        gtf = "results/genomepy/{genome}/{genome}.annotation.gtf",
-        fas = "results/genomepy/{genome}/{genome}.fa"
+        fas = "results/genomepy/{genome}/{genome}.fa",
+        gtf = "results/genomepy/{genome}/{genome}.annotation.gtf"
     output:
-        gtf = "results/eisar/{genome}/{genome}.annotation.expanded.gtf",
-        fas = "results/eisar/{genome}/{genome}.annotation.expanded.fa",
-        tsv = ["results/eisar/{genome}/{genome}.annotation.expanded.features.tsv", "results/eisar/{genome}/{genome}.annotation.expanded.tx2gene.tsv"]
+        fas = "results/eisar/{genome}/{genome}.fa",
+        gtf = "results/eisar/{genome}/{genome}.annotation.gtf",
+        tsv = ["results/eisar/{genome}/{genome}.features.tsv", "results/eisar/{genome}/{genome}.tx2gene.tsv"]
     script:
         "../scripts/eisar.R"

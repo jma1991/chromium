@@ -1,0 +1,7 @@
+name: kallisto
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - kallisto
