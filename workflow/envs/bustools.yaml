@@ -1,0 +1,7 @@
+name: bustools
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bustools

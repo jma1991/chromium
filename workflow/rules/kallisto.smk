@@ -10,7 +10,7 @@ rule kallisto_index:
     input:
         fas = "results/busparse/{genome}/cDNA_introns.fa"
     output:
-        idx = "results/kallisto/index/{genome}.idx"
+        idx = "results/kallisto/{genome}.idx"
     message:
         "[kallisto] Build kallisto index"
     conda:
@@ -20,7 +20,7 @@ rule kallisto_index:
 
 rule kallisto_bus:
     input:
-        idx = "results/kallisto/index/GRCm38.p6.idx",
+        idx = "results/kallisto/GRCm38.p6.idx",
         fq1 = lambda wildcards: units.loc[units['sample'] == wildcards.sample, "fq1"],
         fq2 = lambda wildcards: units.loc[units['sample'] == wildcards.sample, "fq2"]
     output:
@@ -29,7 +29,7 @@ rule kallisto_bus:
                "results/kallisto/{sample}/run_info.json",
                "results/kallisto/{sample}/transcripts.txt"]
     params:
-        out = "results/kallisto/bus/{sample}",
+        out = "results/kallisto/{sample}",
         fqz = lambda wildcards, input: [j for i in zip(input.fq1, input.fq2) for j in i]
     threads:
         16

@@ -1,0 +1,7 @@
+name: salmon
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - salmon

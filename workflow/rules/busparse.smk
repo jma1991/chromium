@@ -14,5 +14,7 @@ rule busparse:
         "results/busparse/{genome}/tr2g.tsv"
     params:
         dir = "results/busparse/{genome}"
+    message:
+        "[busparse] Get files required for RNA velocity with bustools"
     script:
         "../scripts/busparse.R"

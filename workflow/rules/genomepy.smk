@@ -30,3 +30,20 @@ rule genomepy_gunzip:
         "../envs/genomepy.yaml"
     shell:
         "gunzip {input}"
+
+rule genomepy_gentrome:
+    input:
+        "results/eisar/{genome}/{genome}.fa",
+        "results/genomepy/{genome}/{genome}.fa"
+    output:
+        "results/genomepy/{genome}/{genome}.gentrome.fa"
+    shell:
+        "cat {input} > {output}"
+
+rule genomepy_decoys:
+	input:
+		"results/genomepy/{genome}/{genome}.fa.fai"
+	output:
+		"results/genomepy/{genome}/{genome}.decoys.txt"
+	shell:
+		"cut -f 1 {input} > {output}"

@@ -12,7 +12,7 @@ rule star_index:
     threads:
         16
     shell:
-        "STAR --runMode genomeGenerate --runThreadN {threads} --genomeDir {output.dir} --genomeFastaFiles {input.fas} --sjdbGTFfile {input.gtf} --sjdbOverhang 100"
+        "STAR --runMode genomeGenerate --runThreadN {threads} --genomeDir {output.dir} --genomeFastaFiles {input.fas} --sjdbGTFfile {input.gtf} --sjdbOverhang 150"
 
 rule star_solo:
     input:
@@ -22,7 +22,7 @@ rule star_solo:
         fq2 = lambda wildcards: units.loc[units["sample"] == wildcards.sample, "fq2"],
         txt = "workflow/resources/barcodes/3M-february-2018.txt"
     output:
-        dir = directory("results/star/solo/{sample}")
+        bam = "results/star/solo/{sample}/Aligned.sortedByCoord.out.bam"
     params:
         fq1 = lambda wildcards, input: ",".join(input.fq1),
         fq2 = lambda wildcards, input: ",".join(input.fq2),
