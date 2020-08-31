@@ -9,8 +9,10 @@ rule singlecellexperiment_kallisto:
         tsv = "results/gffread/GRCm38.p6/GRCm38.p6.id2name.tsv"
     output:
         rds = "results/singlecellexperiment/{sample}/kallisto.rds"
+    params:
+        out = "results/bustools/{sample}"
     message:
-        "[singlecellexperiment] Create a SingleCellExperiment object from Kallisto output directories"
+        "[singlecellexperiment] Create a SingleCellExperiment object from Kallisto output directory: {params.out}"
     script:
         "../scripts/singlecellexperiment_kallisto.R"
 
@@ -20,7 +22,23 @@ rule singlecellexperiment_salmon:
         tsv = ["results/eisar/GRCm38.p6/GRCm38.p6.features.tsv", "results/gffread/GRCm38.p6/GRCm38.p6.id2name.tsv"]
     output:
         rds = "results/singlecellexperiment/{sample}/salmon.rds"
+    params:
+        out = "results/salmon/alevin/{sample}/alevin"
     message:
-        "[singlecellexperiment] Create a SingleCellExperiment object from Salmon output directories"
+        "[singlecellexperiment] Create a SingleCellExperiment object from Salmon output directory: {params.out}"
     script:
         "../scripts/singlecellexperiment_salmon.R"
+
+rule singlecellexperiment_star:
+    input:
+        mtx = "results/star/solo/{sample}/Solo.out/Velocyto/raw/matrix.mtx"
+    output:
+        rds = "results/singlecellexperiment/{sample}/star.rds"
+    params:
+        out = "results/star/solo/{sample}/Solo.out/Velocyto/raw"
+    message:
+        "[singlecellexperiment] Create a SingleCellExperiment object from STAR output directory: {params.out}"
+    conda:
+        "../envs/singlecellexperiment.yaml"
+    script:
+        "../scripts/singlecellexperiment_star.R"

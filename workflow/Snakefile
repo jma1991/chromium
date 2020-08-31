@@ -3,23 +3,10 @@
 # Email: jashmore@ed.ac.uk
 # License: MIT
 
-# Python modules
-import pandas as pd
-from snakemake.utils import validate
+# Project file
+pepfile: "config/config.yaml"
 
-# Configuration file
-configfile: "config/config.yaml"
-
-# Samples metadata
-samples = pd.read_table(config["samples"])
-samples = samples.set_index("sample", drop = False)
-#validate(samples, schema = "../schemas/samples.schema.yaml")
-
-# Units metadata
-units = pd.read_table(config["units"])
-units = units.set_index(["sample", "unit"], drop = False)
-#validate(units, schema = "../schemas/units.schema.yaml")
-
+# Workflow rule
 include: "rules/genomepy.smk"
 include: "rules/gffread.smk"
 include: "rules/busparse.smk"
@@ -77,4 +64,5 @@ rule all:
         "results/salmon/alevin/SI-GA-E1/alevin/quants_mat.gz",
         # star
         "results/star/index/GRCm38.p6",
-        "results/star/solo/SI-GA-E1/Aligned.sortedByCoord.out.bam"
+        "results/star/solo/SI-GA-E1/Aligned.sortedByCoord.out.bam",
+        "results/singlecellexperiment/SI-GA-E1/star.rds"
