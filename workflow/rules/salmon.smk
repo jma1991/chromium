@@ -26,8 +26,8 @@ rule salmon_index:
 rule salmon_alevin:
     input:
         idx = "results/salmon/index/GRCm38.p6",
-        fq1 = lambda wildcards: units.loc[units['sample'] == wildcards.sample, "fq1"],
-        fq2 = lambda wildcards: units.loc[units['sample'] == wildcards.sample, "fq2"],
+        fq1 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "fq1"],
+        fq2 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "fq2"],
         tsv = "results/eisar/GRCm38.p6/GRCm38.p6.tx2gene.tsv",
         txt = ["results/gffread/GRCm38.p6/GRCm38.p6.mrna.txt", "results/gffread/GRCm38.p6/GRCm38.p6.rrna.txt"]
     output:

@@ -1,0 +1,8 @@
+name: singlecellexperiment
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bioconductor-singlecellexperiment
+  - r-data.table
