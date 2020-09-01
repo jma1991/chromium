@@ -1,4 +1,6 @@
 *
+!config/*
+!resources/barcodes/*
 !workflow
 !workflow/*
 !workflow/report/*
@@ -7,8 +9,6 @@
 !workflow/rules/*
 !workflow/rules/annotation/*
 !workflow/resources/*
-!config.yaml
-!samples.tsv
 !scenario.yaml
 !LICENSE
 !README.md
