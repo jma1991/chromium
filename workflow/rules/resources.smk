@@ -3,9 +3,9 @@
 # Email: jashmore@ed.ac.uk
 # License: MIT
 
-rule resources_barcodes:
+rule barcodes:
     output:
-        txt = "resources/barcodes/3M-february-2018.txt.gz"
+        txt = "resources/barcodes/3M-february-2018.txt"
     params:
         url = "https://raw.githubusercontent.com/10XGenomics/cellranger/master/lib/python/cellranger/barcodes/3M-february-2018.txt.gz"
     shell:

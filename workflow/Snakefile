@@ -16,12 +16,15 @@ include: "rules/genomepy.smk"
 include: "rules/gffread.smk"
 include: "rules/kallisto.smk"
 include: "rules/multiqc.smk"
+include: "rules/resources.smk"
 include: "rules/salmon.smk"
 include: "rules/singlecellexperiment.smk"
 include: "rules/star.smk"
 
 rule all:
     input:
+        # barcodes
+        "resources/barcodes/3M-february-2018.txt",
         # genomepy
         "results/genomepy/GRCm38.p6/GRCm38.p6.annotation.bed",
         "results/genomepy/GRCm38.p6/GRCm38.p6.annotation.gtf",
