@@ -1,0 +1,9 @@
+pep_format_version: "2.0.0"
+
+sample_table: "samples.csv"
+
+subsample_table: "units.csv"
+
+sample_modifiers:
+  append:
+      genome: "GRCm38.p6"
