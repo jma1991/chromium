@@ -5,15 +5,15 @@
 
 rule cutadapt:
     input:
-        fq1 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "fq1"],
-        fq2 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "fq2"],
+        fq1 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "read1"],
+        fq2 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "read2"]
     output:
-        fq1 = "results/cutadapt/{sample_name}_{subsample_name}_1.fastq.gz",
-        fq2 = "results/cutadapt/{sample_name}_{subsample_name}_2.fastq.gz"
+        fq1 = "results/cutadapt/{sample}/{unit}_R1.fastq.gz",
+        fq2 = "results/cutadapt/{sample}/{unit}_R2.fastq.gz"
     message:
         "[cutadapt] Trim TSO and poly-A sequence"
     threads:
-        "16"
+        16
     conda:
         "../envs/cutadapt.yaml"
     shell:

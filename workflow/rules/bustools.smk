@@ -5,7 +5,7 @@
 
 rule bustools_correct:
     input:
-        txt = "workflow/resources/barcodes/3M-february-2018.txt",
+        txt = "resources/barcodes/3M-february-2018.txt",
         bus = "results/kallisto/{sample}/output.bus"
     output:
         bus = "results/bustools/{sample}/output.correct.bus"

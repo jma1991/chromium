@@ -6,16 +6,19 @@
 # Project file
 pepfile: "config/config.yaml"
 
-# Workflow rule
+# Include rules
+include: "rules/alevinqc.smk"
+include: "rules/busparse.smk"
+include: "rules/bustools.smk"
+include: "rules/cutadapt.smk"
+include: "rules/eisar.smk"
 include: "rules/genomepy.smk"
 include: "rules/gffread.smk"
-include: "rules/busparse.smk"
 include: "rules/kallisto.smk"
-include: "rules/bustools.smk"
-include: "rules/eisar.smk"
+include: "rules/multiqc.smk"
 include: "rules/salmon.smk"
-include: "rules/star.smk"
 include: "rules/singlecellexperiment.smk"
+include: "rules/star.smk"
 
 rule all:
     input:
@@ -62,6 +65,7 @@ rule all:
         # salmon
         "results/salmon/index/GRCm38.p6",
         "results/salmon/alevin/SI-GA-E1/alevin/quants_mat.gz",
+        "results/alevinqc/SI-GA-E1.html",
         # star
         "results/star/index/GRCm38.p6",
         "results/star/solo/SI-GA-E1/Aligned.sortedByCoord.out.bam",

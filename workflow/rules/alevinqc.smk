@@ -5,8 +5,14 @@
 
 rule alevinqc:
     input:
-        dir = "results/salmon/alevin/{sample}"
+        mat = "results/salmon/alevin/{sample}/alevin/quants_mat.gz"
     output:
-        pdf = "results/alevinqc/{sample}/alevinReport.pdf"
+        html = "results/alevinqc/{sample}.html"
+    params:
+        dir = "results/salmon/alevin/{sample}"
+    message:
+        "[alevinQC] Generate alevin summary report"
+    conda:
+        "../envs/bioconductor-alevinqc.yaml"
     script:
         "../scripts/alevinqc.R"
