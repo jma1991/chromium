@@ -21,8 +21,8 @@ rule kallisto_index:
 rule kallisto_bus:
     input:
         idx = "results/kallisto/GRCm38.p6.idx",
-        fq1 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "fq1"],
-        fq2 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "fq2"]
+        fq1 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "read1"],
+        fq2 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "read2"]
     output:
         ext = ["results/kallisto/{sample}/matrix.ec",
                "results/kallisto/{sample}/output.bus",

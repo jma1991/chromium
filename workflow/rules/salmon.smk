@@ -20,14 +20,18 @@ rule salmon_index:
         txt = "results/genomepy/{genome}/{genome}.decoys.txt"
     output:
         idx = directory("results/salmon/index/{genome}")
+    threads:
+        16
+    conda:
+        "../envs/salmon.yaml"
     shell:
         "salmon index -t {input.fas} -i {output.idx} -p {threads} -d {input.txt} --keepDuplicates"
 
 rule salmon_alevin:
     input:
         idx = "results/salmon/index/GRCm38.p6",
-        fq1 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "fq1"],
-        fq2 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "fq2"],
+        fq1 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "read1"],
+        fq2 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "read2"],
         tsv = "results/eisar/GRCm38.p6/GRCm38.p6.tx2gene.tsv",
         txt = ["results/gffread/GRCm38.p6/GRCm38.p6.mrna.txt", "results/gffread/GRCm38.p6/GRCm38.p6.rrna.txt"]
     output:
@@ -36,5 +40,7 @@ rule salmon_alevin:
         out = "results/salmon/alevin/{sample}"
     threads:
         16
+    conda:
+        "../envs/salmon.yaml"
     shell:
-        "salmon alevin -l ISR -i {input.idx} -1 {input.fq1} -2 {input.fq2} -o {params.out} -p {threads} --tgMap {input.tsv} --chromiumV3 --mrna {input.txt[0]} --rrna {input.txt[1]}"
+        "salmon alevin -l ISR -i {input.idx} -1 {input.fq1} -2 {input.fq2} -o {params.out} -p {threads} --tgMap {input.tsv} --chromiumV3 --mrna {input.txt[0]} --rrna {input.txt[1]} --dumpFeatures"

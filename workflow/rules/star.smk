@@ -20,9 +20,9 @@ rule star_solo:
     input:
         idx = "results/star/index/GRCm38.p6",
         gtf = "results/genomepy/GRCm38.p6/GRCm38.p6.annotation.gtf",
-        fq1 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "fq1"],
-        fq2 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "fq2"],
-        txt = "workflow/resources/barcodes/3M-february-2018.txt"
+        fq1 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "read1"],
+        fq2 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "read2"],
+        txt = "resources/barcodes/3M-february-2018.txt"
     output:
         bam = "results/star/solo/{sample}/Aligned.sortedByCoord.out.bam"
     params:
