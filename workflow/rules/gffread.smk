@@ -11,7 +11,7 @@ rule gffread_tx2gene:
     log:
         "results/gffread/{genome}/{genome}.tx2gene.log"
     message:
-        "[gffread] Output a tx2gene annotation table"
+        "[gffread] Create transcript_id to gene_id annotation table"
     conda:
         "../envs/gffread.yaml"
     shell:
@@ -25,7 +25,7 @@ rule gffread_id2name:
     log:
         "results/gffread/{genome}/{genome}.id2name.log"
     message:
-        "[gffread] Output a id2name annotation table"
+        "[gffread] Create gene_id to gene_name annotation table"
     conda:
         "../envs/gffread.yaml"
     shell:
@@ -39,7 +39,7 @@ rule gffread_mrna:
     log:
         "results/gffread/{genome}/{genome}.mrna.log"
     message:
-        "[gffread] Output list of mitochondrial genes"
+        "[gffread] Create list of mitochondrial genes"
     conda:
         "../envs/gffread.yaml"
     shell:
@@ -53,7 +53,7 @@ rule gffread_rrna:
     log:
         "results/gffread/{genome}/{genome}.rrna.log"
     message:
-        "[gffread] Output list of ribosomal genes"
+        "[gffread] Create list of ribosomal genes"
     conda:
         "../envs/gffread.yaml"
     shell:
