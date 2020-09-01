@@ -8,37 +8,53 @@ rule gffread_tx2gene:
         "results/genomepy/{genome}/{genome}.annotation.gtf"
     output:
         "results/gffread/{genome}/{genome}.tx2gene.tsv"
+    log:
+        "results/gffread/{genome}/{genome}.tx2gene.log"
     message:
         "[gffread] Output a tx2gene annotation table"
     conda:
         "../envs/gffread.yaml"
     shell:
-        "gffread {input} --table transcript_id,gene_id | sort -u > {output}"
+        "gffread {input} --table transcript_id,gene_id | sort -u 1> {output} 2> {log}"
 
 rule gffread_id2name:
     input:
         "results/genomepy/{genome}/{genome}.annotation.gtf"
     output:
         "results/gffread/{genome}/{genome}.id2name.tsv"
+    log:
+        "results/gffread/{genome}/{genome}.id2name.log"
     message:
         "[gffread] Output a id2name annotation table"
     conda:
         "../envs/gffread.yaml"
     shell:
-        "gffread {input} --table gene_id,gene_name | sort -u > {output}"
+        "gffread {input} --table gene_id,gene_name | sort -u 1> {output} 2> {log}"
 
 rule gffread_mrna:
-	input:
-		"results/genomepy/{genome}/{genome}.annotation.gtf"
-	output:
-		"results/gffread/{genome}/{genome}.mrna.txt"
-	shell:
-		"gffread {input} --table @chr,gene_id | grep MT | cut -f 2 | sort -u > {output}"
+    input:
+        "results/genomepy/{genome}/{genome}.annotation.gtf"
+    output:
+        "results/gffread/{genome}/{genome}.mrna.txt"
+    log:
+        "results/gffread/{genome}/{genome}.mrna.log"
+    message:
+        "[gffread] Output list of mitochondrial genes"
+    conda:
+        "../envs/gffread.yaml"
+    shell:
+        "gffread {input} --table @chr,gene_id | grep MT | cut -f 2 | sort -u 1> {output} 2> {log}"
 
 rule gffread_rrna:
-	input:
-		"results/genomepy/{genome}/{genome}.annotation.gtf"
-	output:
-		"results/gffread/{genome}/{genome}.rrna.txt"
-	shell:
-		"gffread {input} --table gene_biotype,gene_id | grep rRNA | cut -f 2 | sort -u > {output}"
+    input:
+        "results/genomepy/{genome}/{genome}.annotation.gtf"
+    output:
+        "results/gffread/{genome}/{genome}.rrna.txt"
+    log:
+        "results/gffread/{genome}/{genome}.rrna.log"
+    message:
+        "[gffread] Output list of ribosomal genes"
+    conda:
+        "../envs/gffread.yaml"
+    shell:
+        "gffread {input} --table gene_biotype,gene_id | grep rRNA | cut -f 2 | sort -u 1> {output} 2> {log}"
