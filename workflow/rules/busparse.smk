@@ -8,13 +8,17 @@ rule busparse:
         gtf = "results/genomepy/{genome}/{genome}.annotation.gtf",
         fas = "results/genomepy/{genome}/{genome}.fa"
     output:
-        "results/busparse/{genome}/cDNA_introns.fa",
-        "results/busparse/{genome}/cDNA_tx_to_capture.txt",
-        "results/busparse/{genome}/introns_tx_to_capture.txt",
-        "results/busparse/{genome}/tr2g.tsv"
+        ext = ["results/busparse/{genome}/cDNA_introns.fa",
+               "results/busparse/{genome}/cDNA_tx_to_capture.txt",
+               "results/busparse/{genome}/introns_tx_to_capture.txt",
+               "results/busparse/{genome}/tr2g.tsv"]
     params:
         dir = "results/busparse/{genome}"
+    log:
+        "results/busparse/{genome}/get_velocity_files.log"
     message:
         "[busparse] Get files required for RNA velocity with bustools"
+    conda:
+        "../envs/busparse.yaml"
     script:
-        "../scripts/busparse.R"
+        "../scripts/busparse.R 2> {log}"

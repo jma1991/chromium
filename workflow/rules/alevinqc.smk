@@ -10,9 +10,11 @@ rule alevinqc:
         html = "results/alevinqc/{sample}.html"
     params:
         dir = "results/salmon/alevin/{sample}"
+    log:
+        "results/alevinqc/{sample}.log"
     message:
         "[alevinQC] Generate alevin summary report"
     conda:
         "../envs/bioconductor-alevinqc.yaml"
     script:
-        "../scripts/alevinqc.R"
+        "../scripts/alevinqc.R 2> {log}"

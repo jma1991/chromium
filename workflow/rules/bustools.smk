@@ -9,24 +9,28 @@ rule bustools_correct:
         bus = "results/kallisto/{sample}/output.bus"
     output:
         bus = "results/bustools/{sample}/output.correct.bus"
+    log:
+        log = "results/bustools/{sample}/output.correct.log"
     message:
         "[bustools] Error correct BUS file"
     conda:
         "../rules/bustools.yaml"
     shell:
-        "bustools correct -o {output.bus} -w {input.txt} {input.bus}"
+        "bustools correct -o {output.bus} -w {input.txt} {input.bus} 2> {log}"
 
 rule bustools_sort:
     input:
         bus = "results/bustools/{sample}/output.correct.bus"
     output:
         bus = "results/bustools/{sample}/output.correct.sort.bus"
+    log:
+        log = "results/bustools/{sample}/output.correct.sort.log"
     message:
         "[bustools] Sort BUS file by barcode and UMI"
     conda:
         "../rules/bustools.yaml"
     shell:
-        "bustools sort -t {threads} -o {output.bus} {input.bus}"
+        "bustools sort -t {threads} -o {output.bus} {input.bus} 2> {log}"
 
 rule bustools_capture_spliced:
     input:
@@ -36,10 +40,14 @@ rule bustools_capture_spliced:
         bus = "results/bustools/{sample}/output.correct.sort.bus"
     output:
         bus = "results/bustools/{sample}/output.correct.sort.spliced.bus"
+    log:
+        log = "results/bustools/{sample}/output.correct.sort.spliced.log"
     message:
         "[bustools] Capture spliced reads from BUS file"
+    conda:
+        "../rules/bustools.yaml"
     shell:
-        "bustools capture -s -x -o {output.bus} -c {input.txt} -e {input.mat} -t {input.txi} {input.bus}"
+        "bustools capture -s -x -o {output.bus} -c {input.txt} -e {input.mat} -t {input.txi} {input.bus} 2> {log}"
 
 rule bustools_capture_unspliced:
     input:
@@ -49,10 +57,14 @@ rule bustools_capture_unspliced:
         bus = "results/bustools/{sample}/output.correct.sort.bus"
     output:
         bus = "results/bustools/{sample}/output.correct.sort.unspliced.bus"
+    log:
+        log = "results/bustools/{sample}/output.correct.sort.unspliced.log"
     message:
         "[bustools] Capture spliced reads from BUS file"
+    conda:
+        "../rules/bustools.yaml"
     shell:
-        "bustools capture -s -x -o {output.bus} -c {input.txt} -e {input.mat} -t {input.txi} {input.bus}"
+        "bustools capture -s -x -o {output.bus} -c {input.txt} -e {input.mat} -t {input.txi} {input.bus} 2> {log}"
 
 rule bustools_count_spliced:
     input:
@@ -62,12 +74,16 @@ rule bustools_count_spliced:
         bus = "results/bustools/{sample}/output.correct.sort.spliced.bus"
     output:
         ext = multiext("results/bustools/{sample}/output.correct.sort.spliced", ".barcodes.txt", ".genes.txt", ".mtx")
+    log:
+        log = "results/bustools/{sample}/output.correct.sort.spliced.log"
     params:
         out = "results/bustools/{sample}/output.correct.sort.spliced"
     message:
         "[bustools] Generate spliced count matrix from BUS file"
+    conda:
+        "../rules/bustools.yaml"
     shell:
-        "bustools count -o {params.out} -g {input.tsv} -e {input.mat} -t {input.txt} --genecounts {input.bus}"
+        "bustools count -o {params.out} -g {input.tsv} -e {input.mat} -t {input.txt} --genecounts {input.bus} 2> {log}"
 
 rule bustools_count_unspliced:
     input:
@@ -77,9 +93,13 @@ rule bustools_count_unspliced:
         bus = "results/bustools/{sample}/output.correct.sort.unspliced.bus"
     output:
         ext = multiext("results/bustools/{sample}/output.correct.sort.unspliced", ".barcodes.txt", ".genes.txt", ".mtx")
+    log:
+        log = "results/bustools/{sample}/output.correct.sort.unspliced.log"
     params:
         out = "results/bustools/{sample}/output.correct.sort.unspliced"
     message:
         "[bustools] Generate unspliced count matrix from BUS file"
+    conda:
+        "../rules/bustools.yaml"
     shell:
-        "bustools count -o {params.out} -g {input.tsv} -e {input.mat} -t {input.txt} --genecounts {input.bus}"
+        "bustools count -o {params.out} -g {input.tsv} -e {input.mat} -t {input.txt} --genecounts {input.bus} 2> {log}"

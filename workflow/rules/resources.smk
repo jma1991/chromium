@@ -6,7 +6,9 @@
 rule barcodes:
     output:
         txt = "resources/barcodes/3M-february-2018.txt"
+    log:
+        log = "resources/barcodes/3M-february-2018.log"
     params:
         url = "https://raw.githubusercontent.com/10XGenomics/cellranger/master/lib/python/cellranger/barcodes/3M-february-2018.txt.gz"
     shell:
-        "curl {params.url} | gunzip > {output.txt}"
+        "curl {params.url} | gunzip 1> {output.txt} 2> {log}"

@@ -13,6 +13,8 @@ rule singlecellexperiment_kallisto:
         out = "results/bustools/{sample}"
     message:
         "[singlecellexperiment] Create a SingleCellExperiment object from Kallisto output directory: {params.out}"
+    conda:
+        "../envs/singlecellexperiment.yaml"
     script:
         "../scripts/singlecellexperiment_kallisto.R"
 
@@ -26,6 +28,8 @@ rule singlecellexperiment_salmon:
         out = "results/salmon/alevin/{sample}/alevin"
     message:
         "[singlecellexperiment] Create a SingleCellExperiment object from Salmon output directory: {params.out}"
+    conda:
+        "../envs/singlecellexperiment.yaml"
     script:
         "../scripts/singlecellexperiment_salmon.R"
 

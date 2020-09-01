@@ -9,7 +9,7 @@ rule gffread_tx2gene:
     output:
         "results/gffread/{genome}/{genome}.tx2gene.tsv"
     message:
-        "[gffread] Output a tx2gene annotation table from {wildcards.genome}"
+        "[gffread] Output a tx2gene annotation table"
     conda:
         "../envs/gffread.yaml"
     shell:
@@ -21,7 +21,7 @@ rule gffread_id2name:
     output:
         "results/gffread/{genome}/{genome}.id2name.tsv"
     message:
-        "[gffread] Output a id2name annotation table from {wildcards.genome}"
+        "[gffread] Output a id2name annotation table"
     conda:
         "../envs/gffread.yaml"
     shell:
