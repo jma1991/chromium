@@ -1,5 +1,8 @@
 *
+!config
 !config/*
+!resources
+!resources/*
 !resources/barcodes/*
 !workflow
 !workflow/*
