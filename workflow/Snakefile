@@ -43,12 +43,6 @@ rule all:
         "results/busparse/GRCm38.p6/cDNA_tx_to_capture.txt",
         "results/busparse/GRCm38.p6/introns_tx_to_capture.txt",
         "results/busparse/GRCm38.p6/tr2g.tsv",
-        # kallisto
-        "results/kallisto/GRCm38.p6.idx",
-        "results/kallisto/SI-GA-E1/matrix.ec",
-        "results/kallisto/SI-GA-E1/output.bus",
-        "results/kallisto/SI-GA-E1/run_info.json",
-        "results/kallisto/SI-GA-E1/transcripts.txt",
         # bustools
         "results/bustools/SI-GA-E1/output.correct.bus",
         "results/bustools/SI-GA-E1/output.correct.sort.bus",
@@ -60,6 +54,13 @@ rule all:
         "results/bustools/SI-GA-E1/output.correct.sort.unspliced.barcodes.txt",
         "results/bustools/SI-GA-E1/output.correct.sort.unspliced.genes.txt",
         "results/bustools/SI-GA-E1/output.correct.sort.unspliced.mtx",
+        # kallisto
+        "results/kallisto/GRCm38.p6.idx",
+        "results/kallisto/SI-GA-E1/matrix.ec",
+        "results/kallisto/SI-GA-E1/output.bus",
+        "results/kallisto/SI-GA-E1/run_info.json",
+        "results/kallisto/SI-GA-E1/transcripts.txt",
+
         # eisar
         "results/eisar/GRCm38.p6/GRCm38.p6.annotation.gtf",
         "results/eisar/GRCm38.p6/GRCm38.p6.fa",
