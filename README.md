@@ -1,1 +1,1 @@
-# scrnaseq-10x
+# scrnaseq
