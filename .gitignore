@@ -9,12 +9,10 @@
 !workflow/rules/*
 !workflow/rules/annotation/*
 !workflow/resources/*
-!scenario.yaml
 !LICENSE
 !README.md
 !.gitignore
 !.gitattributes
 !.editorconfig
-!.travis.yml
 !.test
 !.test/data
