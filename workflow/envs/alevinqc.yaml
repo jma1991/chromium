@@ -1,7 +1,7 @@
-name: bioconductor-eisar
+name: alevinqc
 channels:
   - conda-forge
   - bioconda
   - defaults
 dependencies:
-  - bioconductor-eisar
+  - bioconductor-alevinqc

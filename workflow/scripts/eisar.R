@@ -1,14 +1,27 @@
 #!/usr/bin/env Rscript
 
-main <- function(input, output) {
+main <- function(input, output, log) {
 
-    suppressPackageStartupMessages({
-        library(Biostrings)
-        library(eisaR)
-        library(GenomicFeatures)
-        library(Rsamtools)
-    })
+    # Log function
 
+    out <- file(log$out, open = "wt")
+
+    err <- file(log$err, open = "wt")
+
+    sink(out, type = "output")
+
+    sink(err, type = "message")
+
+    # Script function
+
+    library(Biostrings)
+
+    library(eisaR)
+
+    library(GenomicFeatures)
+
+    library(Rsamtools)
+    
     rng <- getFeatureRanges(
         gtf = input$gtf,
         featureType = c("spliced", "intron"),
@@ -32,4 +45,4 @@ main <- function(input, output) {
 
 }
 
-main(snakemake@input, snakemake@output)
+main(snakemake@input, snakemake@output, snakemake@log)

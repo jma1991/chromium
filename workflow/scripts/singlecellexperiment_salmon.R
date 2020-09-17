@@ -20,15 +20,15 @@ main <- function(input, output, wildcards) {
 
     # Split by spliced and unspliced
     
-    ann <- read.delim(input$tsv[1], header = TRUE, col.names = c("spliced", "unspliced"))
+    dat <- read.delim(input$tsv[1], header = TRUE, col.names = c("spliced", "unspliced"))
     
-    rse <- splitSE(rse, ann, assayName = "counts")
+    rse <- splitSE(rse, dat, assayName = "counts")
 
     # Import and match annotation
 
     ann <- read.delim(input$tsv[2], header = FALSE, col.names = c("id", "name"))
 
-    rse <- rse[ann$id, ]
+    ann <- ann[match(rownames(rse), ann$id), ]
 
     # Create expanded SCE object
 
@@ -39,7 +39,7 @@ main <- function(input, output, wildcards) {
             unspliced = assay(rse, "unspliced")
         ),
         rowData = DataFrame(
-            ID = rownames(rse),
+            ID = ann$id,
             Symbol = ann$name
         ),
         colData = DataFrame(

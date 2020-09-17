@@ -19,7 +19,7 @@ rule genomepy_install:
     conda:
         "../envs/genomepy.yaml"
     shell:
-        "genomepy install -g results/genomepy -a {wildcards.genome} Ensembl 2> {log}"
+        "genomepy install -g results/genomepy -a {wildcards.genome} 2> {log}"
 
 rule genomepy_gunzip:
     input:

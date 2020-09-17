@@ -12,6 +12,9 @@ rule busparse:
                "results/busparse/{genome}/cDNA_tx_to_capture.txt",
                "results/busparse/{genome}/introns_tx_to_capture.txt",
                "results/busparse/{genome}/tr2g.tsv"]
+    log:
+        out = "results/busparse/{genome}/get_velocity_files.out",
+        err = "results/busparse/{genome}/get_velocity_files.err"
     params:
         dir = "results/busparse/{genome}"
     log:
@@ -21,4 +24,4 @@ rule busparse:
     conda:
         "../envs/busparse.yaml"
     script:
-        "../scripts/busparse.R 2> {log}"
+        "../scripts/busparse.R"

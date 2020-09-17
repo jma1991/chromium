@@ -1,9 +1,10 @@
-pep_format_version: "2.0.0"
+# Author: James Ashmore
+# Copyright: Copyright 2020, James Ashmore
+# Email: jashmore@ed.ac.uk
+# License: MIT
 
-sample_table: "samples.csv"
+samples: config/samples.tsv
 
-subsample_table: "units.csv"
+units: config/units.tsv
 
-sample_modifiers:
-  append:
-      genome: "GRCm38.p6"
+genome: GRCm38.p6

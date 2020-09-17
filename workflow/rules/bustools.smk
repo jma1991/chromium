@@ -14,7 +14,7 @@ rule bustools_correct:
     message:
         "[bustools] Error correct BUS file"
     conda:
-        "../rules/bustools.yaml"
+        "../envs/bustools.yaml"
     shell:
         "bustools correct -o {output.bus} -w {input.txt} {input.bus} 2> {log}"
 
@@ -28,7 +28,7 @@ rule bustools_sort:
     message:
         "[bustools] Sort BUS file by barcode and UMI"
     conda:
-        "../rules/bustools.yaml"
+        "../envs/bustools.yaml"
     shell:
         "bustools sort -t {threads} -o {output.bus} {input.bus} 2> {log}"
 
@@ -45,7 +45,7 @@ rule bustools_capture_spliced:
     message:
         "[bustools] Capture spliced reads from BUS file"
     conda:
-        "../rules/bustools.yaml"
+        "../envs/bustools.yaml"
     shell:
         "bustools capture -s -x -o {output.bus} -c {input.txt} -e {input.mat} -t {input.txi} {input.bus} 2> {log}"
 
@@ -62,7 +62,7 @@ rule bustools_capture_unspliced:
     message:
         "[bustools] Capture spliced reads from BUS file"
     conda:
-        "../rules/bustools.yaml"
+        "../envs/bustools.yaml"
     shell:
         "bustools capture -s -x -o {output.bus} -c {input.txt} -e {input.mat} -t {input.txi} {input.bus} 2> {log}"
 
@@ -81,7 +81,7 @@ rule bustools_count_spliced:
     message:
         "[bustools] Generate spliced count matrix from BUS file"
     conda:
-        "../rules/bustools.yaml"
+        "../envs/bustools.yaml"
     shell:
         "bustools count -o {params.out} -g {input.tsv} -e {input.mat} -t {input.txt} --genecounts {input.bus} 2> {log}"
 
@@ -100,6 +100,6 @@ rule bustools_count_unspliced:
     message:
         "[bustools] Generate unspliced count matrix from BUS file"
     conda:
-        "../rules/bustools.yaml"
+        "../envs/bustools.yaml"
     shell:
         "bustools count -o {params.out} -g {input.tsv} -e {input.mat} -t {input.txt} --genecounts {input.bus} 2> {log}"

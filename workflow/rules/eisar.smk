@@ -11,5 +11,8 @@ rule eisar:
         fas = "results/eisar/{genome}/{genome}.fa",
         gtf = "results/eisar/{genome}/{genome}.annotation.gtf",
         tsv = ["results/eisar/{genome}/{genome}.features.tsv", "results/eisar/{genome}/{genome}.tx2gene.tsv"]
+    log:
+        out = "results/eisar/{genome}/log.out",
+        err = "results/eisar/{genome}/log.err"
     script:
         "../scripts/eisar.R"

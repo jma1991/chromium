@@ -13,15 +13,15 @@ rule kallisto_index:
     message:
         "[kallisto] Build kallisto index"
     conda:
-        "../rules/kallisto.yaml"
+        "../envs/kallisto.yaml"
     shell:
         "kallisto index -i {output.idx} {input.fas} 2> {log}"
 
 rule kallisto_bus:
     input:
         idx = "results/kallisto/GRCm38.p6.idx",
-        fq1 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "read1"],
-        fq2 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "read2"]
+        fq1 = lambda wildcards: expand("results/cutadapt/{{sample}}_{unit}_1.fastq.gz", unit = units.loc[wildcards.sample, "unit"]),
+        fq2 = lambda wildcards: expand("results/cutadapt/{{sample}}_{unit}_2.fastq.gz", unit = units.loc[wildcards.sample, "unit"])
     output:
         ext = ["results/kallisto/{sample}/matrix.ec",
                "results/kallisto/{sample}/output.bus",
@@ -37,6 +37,6 @@ rule kallisto_bus:
     message:
         "[kallisto] Generate BUS file for single-cell data"
     conda:
-        "../rules/kallisto.yaml"
+        "../envs/kallisto.yaml"
     shell:
         "kallisto bus -i {input.idx} -o {params.out} -x 10xv3 -t {threads} {params.fqz} 2> {log}"

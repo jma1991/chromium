@@ -1,6 +1,18 @@
 #!/usr/bin/env Rscript
 
-main <- function(input, params) {
+main <- function(input, log, params) {
+
+    # Log function
+
+    out <- file(log$out, open = "wt")
+
+    err <- file(log$err, open = "wt")
+
+    sink(out, type = "output")
+
+    sink(err, type = "message")
+
+    # Script function
 
     library(Biostrings)
 
@@ -17,9 +29,10 @@ main <- function(input, params) {
         out_path = params$dir,
         style = "Ensembl",
         transcript_version = NULL,
-        gene_version = NULL
+        gene_version = NULL,
+        chrs_only = FALSE
     )
 
 }
 
-main(snakemake@input, snakemake@params)
+main(snakemake@input, snakemake@log, snakemake@params)

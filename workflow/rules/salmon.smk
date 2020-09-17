@@ -8,10 +8,10 @@ rule salmon_index:
         fas = "results/genomepy/{genome}/{genome}.gentrome.fa",
         txt = "results/genomepy/{genome}/{genome}.decoys.txt"
     output:
-        idx = directory("results/salmon/index/{genome}")
+        idx = directory("results/salmon/{genome}")
     log:
-        out = "results/salmon/index/{genome}/log.out",
-        err = "results/salmon/index/{genome}/log.err"
+        out = "results/salmon/{genome}/log.out",
+        err = "results/salmon/{genome}/log.err"
     message:
         "[salmon] Create a Salmon index"
     threads:
@@ -23,20 +23,20 @@ rule salmon_index:
 
 rule salmon_alevin:
     input:
-        idx = "results/salmon/index/GRCm38.p6",
-        fq1 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "read1"],
-        fq2 = lambda wildcards: pep.subsample_table.loc[pep.subsample_table['sample_name'] == wildcards.sample, "read2"],
-        tsv = "results/eisar/GRCm38.p6/GRCm38.p6.tx2gene.tsv",
-        txt = ["results/gffread/GRCm38.p6/GRCm38.p6.mrna.txt", "results/gffread/GRCm38.p6/GRCm38.p6.rrna.txt"]
+        idx = expand("results/salmon/{genome}", genome = config["genome"]),
+        fq1 = lambda wildcards: expand("results/cutadapt/{{sample}}_{unit}_1.fastq.gz", unit = units.loc[wildcards.sample, "unit"]),
+        fq2 = lambda wildcards: expand("results/cutadapt/{{sample}}_{unit}_2.fastq.gz", unit = units.loc[wildcards.sample, "unit"]),
+        tsv = expand("results/eisar/{genome}/{genome}.tx2gene.tsv", genome = config["genome"]),
+        txt = expand(["results/gffread/{genome}/{genome}.mrna.txt", "results/gffread/{genome}/{genome}.rrna.txt"], genome = config["genome"])
     output:
-        mat = "results/salmon/alevin/{sample}/alevin/quants_mat.gz"
+        mat = "results/salmon/{sample}/alevin/quants_mat.gz"
     log:
-        out = "results/salmon/alevin/{sample}/log.out",
-        err = "results/salmon/alevin/{sample}/log.err"
+        out = "results/salmon/{sample}/log.out",
+        err = "results/salmon/{sample}/log.err"
     params:
-        out = "results/salmon/alevin/{sample}"
+        out = "results/salmon/{sample}"
     message:
-        "[salmon]"
+        "[salmon] Estimate gene abundances from scRNA-seq data"
     threads:
         16
     conda:

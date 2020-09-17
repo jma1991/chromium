@@ -3,11 +3,26 @@
 # Email: jashmore@ed.ac.uk
 # License: MIT
 
-# Project file
-pepfile: "config/config.yaml"
+# Configuration
+configfile: "config/config.yaml"
 
-# Include rules
-include: "rules/alevinqc.smk"
+# Sample metadata
+import pandas as pd
+samples = pd.read_table(config["samples"])
+samples = samples.set_index("sample", drop = False)
+
+# Unit metadata
+units = pd.read_table(config["units"])
+units = units.set_index(["sample", "unit"], drop = False)
+
+# Wildcard
+wildcard_constraints:
+	genome = config["genome"],
+	sample = "|".join(samples["sample"]),
+	unit = "|".join(units["unit"])
+
+# Workflow rules
+#include: "rules/alevinqc.smk"
 include: "rules/busparse.smk"
 include: "rules/bustools.smk"
 include: "rules/cutadapt.smk"
@@ -15,7 +30,7 @@ include: "rules/eisar.smk"
 include: "rules/genomepy.smk"
 include: "rules/gffread.smk"
 include: "rules/kallisto.smk"
-include: "rules/multiqc.smk"
+#include: "rules/multiqc.smk"
 include: "rules/resources.smk"
 include: "rules/salmon.smk"
 include: "rules/singlecellexperiment.smk"
@@ -23,9 +38,7 @@ include: "rules/star.smk"
 
 rule all:
     input:
-        # barcodes
         "resources/barcodes/3M-february-2018.txt",
-        # genomepy
         "results/genomepy/GRCm38.p6/GRCm38.p6.annotation.bed",
         "results/genomepy/GRCm38.p6/GRCm38.p6.annotation.gtf",
         "results/genomepy/GRCm38.p6/GRCm38.p6.fa",
@@ -33,44 +46,35 @@ rule all:
         "results/genomepy/GRCm38.p6/GRCm38.p6.fa.sizes",
         "results/genomepy/GRCm38.p6/GRCm38.p6.gaps.bed",
         "results/genomepy/GRCm38.p6/README.txt",
-        # gffread
         "results/gffread/GRCm38.p6/GRCm38.p6.tx2gene.tsv",
         "results/gffread/GRCm38.p6/GRCm38.p6.id2name.tsv",
         "results/gffread/GRCm38.p6/GRCm38.p6.mrna.txt",
         "results/gffread/GRCm38.p6/GRCm38.p6.rrna.txt",
-        # busparse
         "results/busparse/GRCm38.p6/cDNA_introns.fa",
         "results/busparse/GRCm38.p6/cDNA_tx_to_capture.txt",
         "results/busparse/GRCm38.p6/introns_tx_to_capture.txt",
         "results/busparse/GRCm38.p6/tr2g.tsv",
-        # bustools
-        "results/bustools/SI-GA-E1/output.correct.bus",
-        "results/bustools/SI-GA-E1/output.correct.sort.bus",
-        "results/bustools/SI-GA-E1/output.correct.sort.spliced.bus",
-        "results/bustools/SI-GA-E1/output.correct.sort.unspliced.bus",
-        "results/bustools/SI-GA-E1/output.correct.sort.spliced.barcodes.txt",
-        "results/bustools/SI-GA-E1/output.correct.sort.spliced.genes.txt",
-        "results/bustools/SI-GA-E1/output.correct.sort.spliced.mtx",
-        "results/bustools/SI-GA-E1/output.correct.sort.unspliced.barcodes.txt",
-        "results/bustools/SI-GA-E1/output.correct.sort.unspliced.genes.txt",
-        "results/bustools/SI-GA-E1/output.correct.sort.unspliced.mtx",
-        # kallisto
-        "results/kallisto/GRCm38.p6.idx",
-        "results/kallisto/SI-GA-E1/matrix.ec",
-        "results/kallisto/SI-GA-E1/output.bus",
-        "results/kallisto/SI-GA-E1/run_info.json",
-        "results/kallisto/SI-GA-E1/transcripts.txt",
-
-        # eisar
         "results/eisar/GRCm38.p6/GRCm38.p6.annotation.gtf",
         "results/eisar/GRCm38.p6/GRCm38.p6.fa",
         "results/eisar/GRCm38.p6/GRCm38.p6.features.tsv",
         "results/eisar/GRCm38.p6/GRCm38.p6.tx2gene.tsv",
-        # salmon
-        "results/salmon/index/GRCm38.p6",
-        "results/salmon/alevin/SI-GA-E1/alevin/quants_mat.gz",
-        "results/alevinqc/SI-GA-E1.html",
-        # star
-        "results/star/index/GRCm38.p6",
-        "results/star/solo/SI-GA-E1/Aligned.sortedByCoord.out.bam",
-        "results/singlecellexperiment/SI-GA-E1/star.rds"
+        "results/kallisto/GRCm38.p6.idx",
+        expand("results/cutadapt/{sample}_{unit}_{read}.fastq.gz", zip, sample = units["sample"], unit = units["unit"], read = ["1", "2"]),
+        expand("results/kallisto/{sample}/matrix.ec", sample = samples["sample"]),
+        expand("results/kallisto/{sample}/output.bus", sample = samples["sample"]),
+        expand("results/kallisto/{sample}/run_info.json", sample = samples["sample"]),
+        expand("results/kallisto/{sample}/transcripts.txt", sample = samples["sample"]),
+        expand("results/bustools/{sample}/output.correct.bus", sample = samples["sample"]),
+        expand("results/bustools/{sample}/output.correct.sort.bus", sample = samples["sample"]),
+        expand("results/bustools/{sample}/output.correct.sort.spliced.bus", sample = samples["sample"]),
+        expand("results/bustools/{sample}/output.correct.sort.unspliced.bus", sample = samples["sample"]),
+        expand("results/bustools/{sample}/output.correct.sort.spliced.barcodes.txt", sample = samples["sample"]),
+        expand("results/bustools/{sample}/output.correct.sort.spliced.genes.txt", sample = samples["sample"]),
+        expand("results/bustools/{sample}/output.correct.sort.spliced.mtx", sample = samples["sample"]),
+        expand("results/bustools/{sample}/output.correct.sort.unspliced.barcodes.txt", sample = samples["sample"]),
+        expand("results/bustools/{sample}/output.correct.sort.unspliced.genes.txt", sample = samples["sample"]),
+        expand("results/bustools/{sample}/output.correct.sort.unspliced.mtx", sample = samples["sample"]),
+        expand("results/salmon/{genome}", genome = config["genome"]),
+        expand("results/salmon/{sample}/alevin/quants_mat.gz", sample = samples["sample"]),
+        expand("results/singlecellexperiment/{sample}.{quant}.rds", sample = samples["sample"], quant = ["kallisto", "salmon"])
+

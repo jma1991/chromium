@@ -1,14 +1,10 @@
 #!/usr/bin/env Rscript
 
 main <- function(input, output, wildcards) {
-
-    # Load Bioconductor packages
     
     library(BUSpaRse)
     
     library(SingleCellExperiment)
-
-    #
 
     spliced_mtx <- sub('\\.mtx$', '', input$mtx[1])
 
@@ -22,17 +18,23 @@ main <- function(input, output, wildcards) {
     )
     
     ann <- read.delim(input$tsv, header = FALSE, col.names = c("id", "name"))
-    
-    use <- intersect(colnames(out$spliced), colnames(out$unspliced))
-    
-    out$spliced <- out$spliced[ann$id, use]
-    
-    out$unspliced <- out$unspliced[ann$id, use]
-    
+
+    row <- intersect(rownames(out$spliced), rownames(out$unspliced))
+
+    col <- intersect(colnames(out$spliced), colnames(out$unspliced))
+
+    out$spliced <- out$spliced[row, col]
+
+    out$unspliced <- out$unspliced[row, col]
+
+    ann <- read.delim(input$tsv, header = FALSE, col.names = c("id", "name"))
+
+    ann <- ann[match(row, ann$id), ]
+
     sce <- SingleCellExperiment(
         assays = list(counts = out$spliced, spliced = out$spliced, unspliced = out$unspliced),
         rowData = DataFrame(ID = ann$id, Symbol = ann$name),
-        colData = DataFrame(Sample = wildcards$sample, Barcode = use)
+        colData = DataFrame(Sample = wildcards$sample, Barcode = col)
     )
 
     saveRDS(sce, file = output$rds)

@@ -1,7 +1,7 @@
-name: bioconductor-busparse
+name: cutadapt
 channels:
   - conda-forge
   - bioconda
   - defaults
 dependencies:
-  - bioconductor-busparse
+  - cutadapt

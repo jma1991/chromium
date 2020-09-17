@@ -8,7 +8,7 @@ rule singlecellexperiment_kallisto:
         mtx = expand("results/bustools/{{sample}}/output.correct.sort.{feature}.mtx", feature = ["spliced", "unspliced"]),
         tsv = "results/gffread/GRCm38.p6/GRCm38.p6.id2name.tsv"
     output:
-        rds = "results/singlecellexperiment/{sample}/kallisto.rds"
+        rds = "results/singlecellexperiment/{sample}.kallisto.rds"
     params:
         out = "results/bustools/{sample}"
     message:
@@ -20,12 +20,12 @@ rule singlecellexperiment_kallisto:
 
 rule singlecellexperiment_salmon:
     input:
-        mat = "results/salmon/alevin/{sample}/alevin/quants_mat.gz",
+        mat = "results/salmon/{sample}/alevin/quants_mat.gz",
         tsv = ["results/eisar/GRCm38.p6/GRCm38.p6.features.tsv", "results/gffread/GRCm38.p6/GRCm38.p6.id2name.tsv"]
     output:
-        rds = "results/singlecellexperiment/{sample}/salmon.rds"
+        rds = "results/singlecellexperiment/{sample}.salmon.rds"
     params:
-        out = "results/salmon/alevin/{sample}/alevin"
+        out = "results/salmon/{sample}/alevin"
     message:
         "[singlecellexperiment] Create a SingleCellExperiment object from Salmon output directory: {params.out}"
     conda:

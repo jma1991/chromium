@@ -1,0 +1,7 @@
+name: busparse
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bioconductor-busparse=1.2.1

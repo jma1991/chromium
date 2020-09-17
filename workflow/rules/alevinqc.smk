@@ -15,6 +15,6 @@ rule alevinqc:
     message:
         "[alevinQC] Generate alevin summary report"
     conda:
-        "../envs/bioconductor-alevinqc.yaml"
+        "../envs/alevinqc.yaml"
     script:
         "../scripts/alevinqc.R 2> {log}"
