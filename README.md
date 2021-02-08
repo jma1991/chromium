@@ -39,7 +39,7 @@ Ripple is easiest to use when installed with [npm][npm]:
 Clone workflow into working directory:
 
 ```sh
-git clone https://github.com/jma1991/rnaseq.git
+git clone https://github.com/jma1991/scrnaseq.git
 ```
 
 Execute workflow and deploy software dependencies via conda:
