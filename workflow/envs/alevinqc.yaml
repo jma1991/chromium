@@ -1,7 +1,0 @@
-name: alevinqc
-channels:
-  - conda-forge
-  - bioconda
-  - defaults
-dependencies:
-  - bioconductor-alevinqc

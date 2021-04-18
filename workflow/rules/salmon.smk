@@ -3,15 +3,32 @@
 # Email: jashmore@ed.ac.uk
 # License: MIT
 
+rule salmon_gentrome:
+    input:
+        "results/eisar/{genome}/{genome}.fa",
+        "results/genomepy/{genome}/{genome}.fa"
+    output:
+        "results/salmon/genome/{genome}/gentrome.fa"
+    shell:
+        "cat {input} > {output}"
+
+rule salmon_decoys:
+    input:
+        "results/genomepy/{genome}/{genome}.fa.fai"
+    output:
+        "results/salmon/genome/{genome}/decoys.txt"
+    shell:
+        "cut -f 1 {input} > {output}"
+
 rule salmon_index:
     input:
-        fas = "results/genomepy/{genome}/{genome}.gentrome.fa",
-        txt = "results/genomepy/{genome}/{genome}.decoys.txt"
+        transcripts = "results/salmon/genome/{genome}/gentrome.fa",
+        decoys = "results/salmon/genome/{genome}/decoys.txt"
     output:
-        idx = directory("results/salmon/{genome}")
+        index = directory("results/salmon/index/{genome}")
     log:
-        out = "results/salmon/{genome}/log.out",
-        err = "results/salmon/{genome}/log.err"
+        out = "results/salmon/index/{genome}/log.out",
+        err = "results/salmon/index/{genome}/log.err"
     message:
         "[salmon] Create a Salmon index"
     threads:
@@ -19,22 +36,30 @@ rule salmon_index:
     conda:
         "../envs/salmon.yaml"
     shell:
-        "salmon index -t {input.fas} -i {output.idx} -p {threads} -d {input.txt} --keepDuplicates 1> {log.out} 2> {log.err}"
+        "salmon index"
+        " --transcripts {input.transcripts}"
+        " --index {output.index}"
+        " --threads {threads}"
+        " --decoys {input.decoys}"
+        " --keepDuplicates"
+        " 1> {log.out}"
+        " 2> {log.err}"
 
 rule salmon_alevin:
     input:
-        idx = expand("results/salmon/{genome}", genome = config["genome"]),
-        fq1 = lambda wildcards: expand("results/cutadapt/{{sample}}_{unit}_1.fastq.gz", unit = units.loc[wildcards.sample, "unit"]),
-        fq2 = lambda wildcards: expand("results/cutadapt/{{sample}}_{unit}_2.fastq.gz", unit = units.loc[wildcards.sample, "unit"]),
-        tsv = expand("results/eisar/{genome}/{genome}.tx2gene.tsv", genome = config["genome"]),
-        txt = expand(["results/gffread/{genome}/{genome}.mrna.txt", "results/gffread/{genome}/{genome}.rrna.txt"], genome = config["genome"])
+        index = expand("results/salmon/index/{genome}", genome = config["genome"]),
+        mates1 = lambda wildcards: units.loc[wildcards.sample, "read1"],
+        mates2 = lambda wildcards: units.loc[wildcards.sample, "read2"],
+        tgMap = expand("results/eisar/{genome}/{genome}.tx2gene.tsv", genome = config["genome"]),
+        mrna = expand("results/gffread/{genome}/{genome}.mrna.txt", genome = config["genome"]),
+        rrna = expand("results/gffread/{genome}/{genome}.rrna.txt", genome = config["genome"])
     output:
-        mat = "results/salmon/{sample}/alevin/quants_mat.gz"
-    log:
-        out = "results/salmon/{sample}/log.out",
-        err = "results/salmon/{sample}/log.err"
+        output = directory("results/salmon/alevin/{sample}")
     params:
-        out = "results/salmon/{sample}"
+        arg = salmon_alevin_params
+    log:
+        out = "results/salmon/alevin/{sample}/log.out",
+        err = "results/salmon/alevin/{sample}/log.err"
     message:
         "[salmon] Estimate gene abundances from scRNA-seq data"
     threads:
@@ -42,4 +67,16 @@ rule salmon_alevin:
     conda:
         "../envs/salmon.yaml"
     shell:
-        "salmon alevin -l ISR -i {input.idx} -1 {input.fq1} -2 {input.fq2} -o {params.out} -p {threads} --tgMap {input.tsv} --chromiumV3 --mrna {input.txt[0]} --rrna {input.txt[1]} --dumpFeatures 1> {log.out} 2> {log.err}"
+        "salmon alevin"
+        " --libType ISR"
+        " --index {input.index}"
+        " --mates1 {input.mates1}"
+        " --mates2 {input.mates2}"
+        " {params.arg[protocol]}"
+        " --output {output.output}"
+        " --threads {threads}"
+        " --tgMap {input.tgMap}"
+        " --mrna {input.mrna}"
+        " --rrna {input.rrna}"
+        " 1> {log.out}"
+        " 2> {log.err}"

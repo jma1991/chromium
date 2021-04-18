@@ -5,12 +5,12 @@
 
 rule bustools_correct:
     input:
-        txt = "resources/barcodes/3M-february-2018.txt",
-        bus = "results/kallisto/{sample}/output.bus"
+        txt = "resources/barcodes/{chemistry}.txt", chemistry = config["chemistry"]),
+        bus = "results/kallisto/bus/{sample}/output.bus"
     output:
-        bus = "results/bustools/{sample}/output.correct.bus"
+        bus = "results/bustools/correct/{sample}/output.bus"
     log:
-        log = "results/bustools/{sample}/output.correct.log"
+        log = "results/bustools/correct/{sample}/output.log"
     message:
         "[bustools] Error correct BUS file"
     conda:
@@ -20,11 +20,11 @@ rule bustools_correct:
 
 rule bustools_sort:
     input:
-        bus = "results/bustools/{sample}/output.correct.bus"
+        bus = "results/bustools/correct/{sample}/output.bus"
     output:
-        bus = "results/bustools/{sample}/output.correct.sort.bus"
+        bus = "results/bustools/sort/{sample}/output.bus"
     log:
-        log = "results/bustools/{sample}/output.correct.sort.log"
+        log = "results/bustools/sort/{sample}/output.log"
     message:
         "[bustools] Sort BUS file by barcode and UMI"
     conda:
@@ -34,14 +34,14 @@ rule bustools_sort:
 
 rule bustools_capture_spliced:
     input:
-        txt = "results/busparse/GRCm38.p6/introns_tx_to_capture.txt",
-        mat = "results/kallisto/{sample}/matrix.ec",
-        txi = "results/kallisto/{sample}/transcripts.txt",
-        bus = "results/bustools/{sample}/output.correct.sort.bus"
+        txt = expand("results/busparse/get_velocity_files/{genome}/introns_tx_to_capture.txt", genome = config["genome"]),
+        mat = "results/kallisto/bus/{sample}/matrix.ec",
+        txi = "results/kallisto/bus/{sample}/transcripts.txt",
+        bus = "results/bustools/sort/{sample}/output.bus"
     output:
-        bus = "results/bustools/{sample}/output.correct.sort.spliced.bus"
+        bus = "results/bustools/capture/{sample}/spliced.bus"
     log:
-        log = "results/bustools/{sample}/output.correct.sort.spliced.log"
+        log = "results/bustools/capture/{sample}/spliced.log"
     message:
         "[bustools] Capture spliced reads from BUS file"
     conda:
@@ -51,16 +51,16 @@ rule bustools_capture_spliced:
 
 rule bustools_capture_unspliced:
     input:
-        txt = "results/busparse/GRCm38.p6/cDNA_tx_to_capture.txt",
-        mat = "results/kallisto/{sample}/matrix.ec",
-        txi = "results/kallisto/{sample}/transcripts.txt",
-        bus = "results/bustools/{sample}/output.correct.sort.bus"
+        txt = expand("results/busparse/get_velocity_files/{genome}/cDNA_tx_to_capture.txt", genome = config["genome"]),
+        mat = "results/kallisto/bus/{sample}/matrix.ec",
+        txi = "results/kallisto/bus/{sample}/transcripts.txt",
+        bus = "results/bustools/sort/{sample}/output.bus"
     output:
-        bus = "results/bustools/{sample}/output.correct.sort.unspliced.bus"
+        bus = "results/bustools/capture/{sample}/unspliced.bus"
     log:
-        log = "results/bustools/{sample}/output.correct.sort.unspliced.log"
+        log = "results/bustools/capture/{sample}/unspliced.log"
     message:
-        "[bustools] Capture spliced reads from BUS file"
+        "[bustools] Capture unspliced reads from BUS file"
     conda:
         "../envs/bustools.yaml"
     shell:
@@ -68,16 +68,16 @@ rule bustools_capture_unspliced:
 
 rule bustools_count_spliced:
     input:
-        tsv = "results/busparse/GRCm38.p6/tr2g.tsv",
-        mat = "results/kallisto/{sample}/matrix.ec",
-        txt = "results/kallisto/{sample}/transcripts.txt",
-        bus = "results/bustools/{sample}/output.correct.sort.spliced.bus"
+        tsv = expand("results/busparse/get_velocity_files/{genome}/tr2g.tsv", genome = config["genome"]),
+        mat = "results/kallisto/bus/{sample}/matrix.ec",
+        txt = "results/kallisto/bus/{sample}/transcripts.txt",
+        bus = "results/bustools/capture/{sample}/spliced.bus"
     output:
-        ext = multiext("results/bustools/{sample}/output.correct.sort.spliced", ".barcodes.txt", ".genes.txt", ".mtx")
+        ext = multiext("results/bustools/count/{sample}/spliced", ".barcodes.txt", ".genes.txt", ".mtx")
     log:
-        log = "results/bustools/{sample}/output.correct.sort.spliced.log"
+        log = "results/bustools/count/{sample}/spliced.log"
     params:
-        out = "results/bustools/{sample}/output.correct.sort.spliced"
+        out = "results/bustools/count/{sample}/spliced"
     message:
         "[bustools] Generate spliced count matrix from BUS file"
     conda:
@@ -87,16 +87,16 @@ rule bustools_count_spliced:
 
 rule bustools_count_unspliced:
     input:
-        tsv = "results/busparse/GRCm38.p6/tr2g.tsv",
-        mat = "results/kallisto/{sample}/matrix.ec",
-        txt = "results/kallisto/{sample}/transcripts.txt",
-        bus = "results/bustools/{sample}/output.correct.sort.unspliced.bus"
+        tsv = expand("results/busparse/get_velocity_files/{genome}/tr2g.tsv", genome = config["genome"]),
+        mat = "results/kallisto/bus/{sample}/matrix.ec",
+        txt = "results/kallisto/bus/{sample}/transcripts.txt",
+        bus = "results/bustools/capture/{sample}/unspliced.bus"
     output:
-        ext = multiext("results/bustools/{sample}/output.correct.sort.unspliced", ".barcodes.txt", ".genes.txt", ".mtx")
+        ext = multiext("results/bustools/count/{sample}/unspliced", ".barcodes.txt", ".genes.txt", ".mtx")
     log:
-        log = "results/bustools/{sample}/output.correct.sort.unspliced.log"
+        log = "results/bustools/count/{sample}/unspliced.log"
     params:
-        out = "results/bustools/{sample}/output.correct.sort.unspliced"
+        out = "results/bustools/count/{sample}/unspliced"
     message:
         "[bustools] Generate unspliced count matrix from BUS file"
     conda:

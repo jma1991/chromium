@@ -3,34 +3,33 @@
 # Email: jashmore@ed.ac.uk
 # License: MIT
 
-# Configuration
+import pandas
+
+import snakemake
+
 configfile: "config/config.yaml"
 
-# Sample metadata
-import pandas as pd
-samples = pd.read_table(config["samples"])
-samples = samples.set_index("sample", drop = False)
+snakemake.utils.validate(config, "schemas/config.yaml")
 
-# Unit metadata
-units = pd.read_table(config["units"])
-units = units.set_index(["sample", "unit"], drop = False)
+samples = pandas.read_csv(config["samples"])
 
-# Wildcard
-wildcard_constraints:
-	genome = config["genome"],
-	sample = "|".join(samples["sample"]),
-	unit = "|".join(units["unit"])
+snakemake.utils.validate(samples, "schemas/samples.yaml")
 
-# Workflow rules
-#include: "rules/alevinqc.smk"
+samples = samples.set_index("sample")
+
+units = pandas.read_csv(config["units"])
+
+snakemake.utils.validate(units, "schemas/units.yaml")
+
+units = units.set_index(["sample", "unit"])
+
 include: "rules/busparse.smk"
 include: "rules/bustools.smk"
-include: "rules/cutadapt.smk"
+include: "rules/common.smk"
 include: "rules/eisar.smk"
 include: "rules/genomepy.smk"
 include: "rules/gffread.smk"
 include: "rules/kallisto.smk"
-#include: "rules/multiqc.smk"
 include: "rules/resources.smk"
 include: "rules/salmon.smk"
 include: "rules/singlecellexperiment.smk"
@@ -38,43 +37,4 @@ include: "rules/star.smk"
 
 rule all:
     input:
-        "resources/barcodes/3M-february-2018.txt",
-        "results/genomepy/GRCm38.p6/GRCm38.p6.annotation.bed",
-        "results/genomepy/GRCm38.p6/GRCm38.p6.annotation.gtf",
-        "results/genomepy/GRCm38.p6/GRCm38.p6.fa",
-        "results/genomepy/GRCm38.p6/GRCm38.p6.fa.fai",
-        "results/genomepy/GRCm38.p6/GRCm38.p6.fa.sizes",
-        "results/genomepy/GRCm38.p6/GRCm38.p6.gaps.bed",
-        "results/genomepy/GRCm38.p6/README.txt",
-        "results/gffread/GRCm38.p6/GRCm38.p6.tx2gene.tsv",
-        "results/gffread/GRCm38.p6/GRCm38.p6.id2name.tsv",
-        "results/gffread/GRCm38.p6/GRCm38.p6.mrna.txt",
-        "results/gffread/GRCm38.p6/GRCm38.p6.rrna.txt",
-        "results/busparse/GRCm38.p6/cDNA_introns.fa",
-        "results/busparse/GRCm38.p6/cDNA_tx_to_capture.txt",
-        "results/busparse/GRCm38.p6/introns_tx_to_capture.txt",
-        "results/busparse/GRCm38.p6/tr2g.tsv",
-        "results/eisar/GRCm38.p6/GRCm38.p6.annotation.gtf",
-        "results/eisar/GRCm38.p6/GRCm38.p6.fa",
-        "results/eisar/GRCm38.p6/GRCm38.p6.features.tsv",
-        "results/eisar/GRCm38.p6/GRCm38.p6.tx2gene.tsv",
-        "results/kallisto/GRCm38.p6.idx",
-        expand("results/cutadapt/{sample}_{unit}_{read}.fastq.gz", zip, sample = units["sample"], unit = units["unit"], read = ["1", "2"]),
-        expand("results/kallisto/{sample}/matrix.ec", sample = samples["sample"]),
-        expand("results/kallisto/{sample}/output.bus", sample = samples["sample"]),
-        expand("results/kallisto/{sample}/run_info.json", sample = samples["sample"]),
-        expand("results/kallisto/{sample}/transcripts.txt", sample = samples["sample"]),
-        expand("results/bustools/{sample}/output.correct.bus", sample = samples["sample"]),
-        expand("results/bustools/{sample}/output.correct.sort.bus", sample = samples["sample"]),
-        expand("results/bustools/{sample}/output.correct.sort.spliced.bus", sample = samples["sample"]),
-        expand("results/bustools/{sample}/output.correct.sort.unspliced.bus", sample = samples["sample"]),
-        expand("results/bustools/{sample}/output.correct.sort.spliced.barcodes.txt", sample = samples["sample"]),
-        expand("results/bustools/{sample}/output.correct.sort.spliced.genes.txt", sample = samples["sample"]),
-        expand("results/bustools/{sample}/output.correct.sort.spliced.mtx", sample = samples["sample"]),
-        expand("results/bustools/{sample}/output.correct.sort.unspliced.barcodes.txt", sample = samples["sample"]),
-        expand("results/bustools/{sample}/output.correct.sort.unspliced.genes.txt", sample = samples["sample"]),
-        expand("results/bustools/{sample}/output.correct.sort.unspliced.mtx", sample = samples["sample"]),
-        expand("results/salmon/{genome}", genome = config["genome"]),
-        expand("results/salmon/{sample}/alevin/quants_mat.gz", sample = samples["sample"]),
-        expand("results/singlecellexperiment/{sample}.{quant}.rds", sample = samples["sample"], quant = ["kallisto", "salmon"])
-
+        #expand("results/singlecellexperiment/{aligner}/{sample}.rds", aligner = ALIGNERS, sample = SAMPLES)

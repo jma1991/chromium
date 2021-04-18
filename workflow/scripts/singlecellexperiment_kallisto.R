@@ -1,44 +1,55 @@
-#!/usr/bin/env Rscript
+# Author: James Ashmore
+# Copyright: Copyright 2020, James Ashmore
+# Email: jashmore@ed.ac.uk
+# License: MIT
 
-main <- function(input, output, wildcards) {
-    
-    library(BUSpaRse)
-    
+main <- function(input, output, log, wildcards) {
+
+     # Log function
+
+    out <- file(log$out, open = "wt")
+
+    err <- file(log$err, open = "wt")
+
+    sink(out, type = "output")
+
+    sink(err, type = "message")
+
+    # Script function
+
     library(SingleCellExperiment)
 
-    spliced_mtx <- sub('\\.mtx$', '', input$mtx[1])
-
-    unspliced_mtx <- sub('\\.mtx$', '', input$mtx[2])
-
-    out <- read_velocity_output(
-        spliced_dir = dirname(spliced_mtx),
-        spliced_name = basename(spliced_mtx),
-        unspliced_dir = dirname(unspliced_mtx),
-        unspliced_name = basename(unspliced_mtx)
-    )
-    
-    ann <- read.delim(input$tsv, header = FALSE, col.names = c("id", "name"))
-
-    row <- intersect(rownames(out$spliced), rownames(out$unspliced))
-
-    col <- intersect(colnames(out$spliced), colnames(out$unspliced))
-
-    out$spliced <- out$spliced[row, col]
-
-    out$unspliced <- out$unspliced[row, col]
+    mat <- readRDS(input$rds)
 
     ann <- read.delim(input$tsv, header = FALSE, col.names = c("id", "name"))
 
-    ann <- ann[match(row, ann$id), ]
+    dim <- list(i = rownames(mat$spliced), j = colnames(mat$spliced))
+
+    ind <- match(dim$i, ann$id)
+
+    ann <- ann[ind, ]
 
     sce <- SingleCellExperiment(
-        assays = list(counts = out$spliced, spliced = out$spliced, unspliced = out$unspliced),
-        rowData = DataFrame(ID = ann$id, Symbol = ann$name),
-        colData = DataFrame(Sample = wildcards$sample, Barcode = col)
+        
+        assays = list(
+            counts = mat$spliced,
+            spliced = mat$spliced,
+            unspliced = mat$unspliced
+        ),
+        
+        rowData = DataFrame(
+            ID = ann$id,
+            Symbol = ann$name
+        ),
+        
+        colData = DataFrame(
+            Sample = wildcards$sample_name,
+            Barcode = dim$j
+        )
     )
 
     saveRDS(sce, file = output$rds)
 
 }
 
-main(snakemake@input, snakemake@output, snakemake@wildcards)
+main(snakemake@input, snakemake@output, snakemake@log, snakemake@wildcards)

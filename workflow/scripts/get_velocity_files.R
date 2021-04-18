@@ -1,6 +1,9 @@
-#!/usr/bin/env Rscript
+# Author: James Ashmore
+# Copyright: Copyright 2020, James Ashmore
+# Email: jashmore@ed.ac.uk
+# License: MIT
 
-main <- function(input, log, params) {
+main <- function(input, params, log) {
 
     # Log function
 
@@ -18,21 +21,22 @@ main <- function(input, log, params) {
 
     library(BUSpaRse)
 
+    len <- switch(params$chemistry, "10xv1" = 98, "10xv2" = 98, "10xv3" = 91)
+
     dna <- readDNAStringSet(input$fas)
 
     names(dna) <- sapply(strsplit(names(dna), " "), .subset, 1)
     
     get_velocity_files(
         X = input$gtf,
-        L = 91,
+        L = len,
         Genome = dna,
-        out_path = params$dir,
-        style = "Ensembl",
+        out_path = params$out_path,
+        style = params$style,
         transcript_version = NULL,
-        gene_version = NULL,
-        chrs_only = FALSE
+        gene_version = NULL
     )
 
 }
 
-main(snakemake@input, snakemake@log, snakemake@params)
+main(snakemake@input, snakemake@params, snakemake@log)

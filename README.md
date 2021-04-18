@@ -1,83 +1,388 @@
-# SCRNA-SEQ <img align="right" width="200" src="images/roundel.png">
+# Chromium <img align="right" width="200" src="images/roundel.png">
 
-A workflow for scRNA-seq analysis in Snakemake.
+A workflow to process 3' single cell gene expression data
 
 [![Snakemake][shield-snakemake]](https://snakemake.readthedocs.io)
 [![MIT license][shield-license]](https://choosealicense.com/licenses/mit)
 
-Table of Contents
------------------
+## Table of Contents
+---
 
   * [Introduction](#introduction)
   * [Requirements](#requirements)
   * [Usage](#usage)
+  * [Output](#output)
+  * [Configuration](#configuration)
   * [Contributing](#contributing)
   * [Thanks](#thanks)
   * [License](#license)
 
-Introduction
-------------
 
-This workflow is a bioinformatics analysis pipeline for single-cell RNA sequencing data. The workflow is built using [Snakemake - a scalabale bioinformatics workflow engine](https://doi.org/10.1093/bioinformatics/bts480)
+## Introduction
+---
 
+Chromium is a Snakemake workflow to process 3' single cell gene expression data.
 
-Requirements
-------------
+Chromium 
 
-This workflow requires the following software to run:
+* Salmon (Alevin)
 
-  * [Snakemake][snakemake]
-  * [Conda][code]
+* Kallisto (Bus)
 
-Usage
------
+* STAR (Solo)
 
+<br>
 
-Ripple is easiest to use when installed with [npm][npm]:
+## Requirements
+---
 
+Chromium requires the following to run:
+
+  * [Snakemake](https://snakemake.readthedocs.io/en/stable/)
+  * [Conda](https://docs.conda.io/en/latest/)
+
+<br>
+
+## Usage
+---
 
 Clone workflow into working directory:
 
 ```sh
-git clone https://github.com/jma1991/scrnaseq.git
+git clone https://github.com/jashmore/chromium.git
 ```
 
 Execute workflow and deploy software dependencies via conda:
 
 ```sh
-snakemake --use-conda
+snakemake --use-conda --cores 16
 ```
 
-Configuration
--------------
+<br>
+
+## Configuration
+---
 
 Configure the workflow by editing the files in the `config` directory:
 
-- `config.yaml` is a YAML file containing the workflow metadata.
+- `config.yaml` contains the workflow metadata
 
-- `samples.csv` is a CSV file containing the sample metadata.
+- `samples.csv` contains the samples metadata
 
-- `units.csv` is a CSV file contains the unit metadata.
+- `units.csv` contains the units metadata
 
-Contributing
-------------
+### **Config**
 
-To contribute to the workflow, clone this repository locally and commit your code on a separate branch. Please generate unit tests for your code, and run the linter before opening a pull-request:
+The `config.yaml` file must contain the following name/value pairs:
+
+| Name | Description | Example |
+| --- | --- | --- |
+| `samples` | Path to the samples.csv file | "config/samples.csv" |
+| `units` | Path to the units.csv file | "config/units.csv" |
+| `source` | Transcriptome source | "Ensembl" |
+| `organism` | Species name | "Homo sapiens" |
+| `release` | Release number | "101" |
+| `genome` | Genome assembly | "GRCh38.p13" |
+| `chemistry` | Chemistry version | "10xv3" |
+
+
+**Example**
+
+```
+samples: "config/samples.csv"
+units: "config/units.csv"
+source: "Ensmebl"
+organism: "Homo sapiens"
+release: "101"
+genome: "GRCh38.p13"
+chemistry: "10xv3"
+```
+
+<br>
+
+### **Samples**
+
+The `samples.csv` file can contain the following columns:
+
+| Column | Description | Example |
+| --- | --- | --- |
+| `sample` | Sample name | "S1" |
+
+**Example**
+
+```
+sample,condition
+S1,control
+S2,treatment
+```
+
+<br>
+
+### **Units**
+
+The `units.csv` file must contain the following columns:
+
+| Column | Description | Example |
+| --- | --- | --- |
+| `sample` | Sample name | "S1" |
+| `unit` | Unit name | "L001" |
+| `read1` | Read 1 | "S1_L001_1.fastq.gz" |
+| `read2` | Read 2 | "S1_L001_2.fastq.gz" |
+
+**Example**
+
+```
+sample,unit,read1,read2
+S1,L001,S1_L001_1.fastq.gz,S1_L001_2.fastq.gz
+S1,L002,S1_L002_1.fastq.gz,S1_L002_2.fastq.gz
+S2,L001,S2_L001_1.fastq.gz,S2_L001_2.fastq.gz
+S2,L002,S2_L002_1.fastq.gz,S2_L002_2.fastq.gz
+```
+
+<br>
+
+## Output
+---
+
+The workflow generates the following output files in the results directory:
+
+```
+results
+│
+├── busparse
+│   ├── get_velocity_files
+│   │   └── {genome}
+│   │       ├── cDNA_introns.fa
+│   │       ├── cDNA_tx_to_capture.txt
+│   │       ├── get_velocity_files.log
+│   │       ├── introns_tx_to_capture.txt
+│   │       └── tr2g.tsv
+│   └── read_velocity_output
+│       ├── {sample}.log
+│       └── {sample}.rds
+│
+├── bustools
+│   ├── {sample}.correct.bus
+│   ├── {sample}.sort.bus
+│   ├── {sample}.spliced.bus
+│   ├── {sample}.unspliced.bus
+│   ├── {sample}.spliced.mtx
+│   ├── {sample}.spliced.barcodes.txt
+│   ├── {sample}.spliced.genes.txt
+│   ├── {sample}.unspliced.mtx
+│   ├── {sample}.unspliced.barcodes.txt
+│   └── {sample}.unspliced.genes.txt
+│
+├── eisar
+│   ├── {genome}.annotation.gtf
+│   ├── {genome}.fa
+│   ├── {genome}.features.tsv
+│   ├── {genome}.ranges.rds
+│   └── {genome}.tx2gene.tsv
+│
+├── genomepy
+│   ├── {genome}.annotation.bed.gz
+│   ├── {genome}.annotation.gtf.gz
+│   ├── {genome}.fa
+│   ├── {genome}.fa.fai
+│   ├── {genome}.fa.sizes
+│   ├── {genome}.gaps.bed
+│   └── README.txt
+│
+├── gffread
+│   ├── {genome}.id2name.tsv
+│   ├── {genome}.mrna.txt
+│   ├── {genome}.rrna.txt
+│   └── {genome}.tx2gene.tsv
+│
+├── kallisto
+│   ├── bus
+│   │   └── {sample}
+│   │       ├── matrix.ec
+│   │       ├── output.bus
+│   │       ├── run_info.json
+│   │       └── transcripts.txt
+│   └── index
+│       └── {genome}.idx
+│
+├── salmon
+│   ├── genome
+│   │   └── {genome}
+│   │       ├── decoys.txt
+│   │       └── gentrome.fa
+│   └── index
+│       └── {genome}
+│
+├── singlecellexperiment
+│   ├── {sample}.kallisto.rds
+│   ├── {sample}.salmon.rds
+│   └── {sample}.star.rds
+│
+└── star
+    ├── align
+    │   └── {sample}
+    │       ├── Aligned.sortedByCoord.out.bam
+    │       └── Solo.out
+    │           ├── Gene
+    │           └── Velocyto
+    └── index
+        └── {genome}
+```
+
+<br>
+
+### **Eisar**
+
+The `eisar` directory contains the output files generated by the 
+
+| File | Format | Description |
+| --- | --- | --- |
+| `{genome}.annotation.gtf` | GTF |  |
+| `{genome}.fa` | FASTA |  |
+| `{genome}.features.tsv` | TSV |  |
+| `{genome}.ranges.rds` | RDS | GRangesList object |
+| `{genome}.tx2gene.tsv` | TSV | Transcript to gene ID|
+
+<br>
+
+### **Busparse**
+
+The `busparse` directory contains the output files generated by the `get_velocity_files` and `read_velocity_files` commands:
+
+| File | Format | Description |
+| --- | --- | --- |
+| `{genome}.cDNA_introns.fa` | FASTA | Spliced transcripts and introns |
+| `{genome}.cDNA_tx_to_capture.txt` | TXT | Transcript IDs of spliced transcripts |
+| `{genome}.introns_tx_to_capture.txt` | TXT | Transcript IDs of introns |
+| `{genome}.tr2g.tsv` | TSV | Transcripts and introns to genes |
+
+<br>
+
+### **Genomepy**
+
+The `genomepy` directory contains the output files generated by the `install` command:
+
+| File | Format | Description |
+| --- | --- | --- |
+| `{genome}.annotation.bed.gz` | BED | Gene annotation |
+| `{genome}.annotation.gtf.gz` | GTF | Gene annotation |
+| `{genome}.fa` | FASTA | Genome sequence |
+| `{genome}.fa.sizes` | TXT | Chromosome sizes |
+| `{genome}.gaps.bed` | BED | Gap locations |
+| `README.txt` | TXT | README |
+
+<br>
+
+### **Salmon**
+
+The `salmon` directory contains the output files generated by the `index` and `alevin` commands:
+
+| File | Format | Description |
+| --- | --- | --- |
+| `alevin/{sample}/quants_mat.gz` |  | Compressed count matrix |
+| `alevin/{sample}/quants_mat_cols.txt` | TXT | Column header (gene_id) of the matrix |
+| `alevin/{sample}/quants_mat_rows.txt` | TXT | Row index (CB-ids) of the matrix |
+| `alevin/{sample}/quants_tier_mat.gz` |  | Tier categorization of the matrix |
+| `index/{genome}` |  | Tier categorization of the matrix |
+
+<br>
+
+### **Star**
+
+The `star` directory contains the output files generated by the `genomeGenerate` and `alignReads` commands:
+
+
+| File | Format | Description |
+| --- | --- | --- |
+| `align/{sample}/Aligned.sortedByCoord.out.bam` | BAM | Alignments |
+| `align/{sample}/Solo.out/Gene` | DIR | Gene directory |
+| `align/{sample}/Solo.out/Velocyto` | DIR | Velocyto directory |
+
+<br>
+
+### **Kallisto**
+
+The `kallisto` directory contains the output files generated by the `index` and `bus` commands:
+
+| File | Format | Description |
+| --- | --- | --- |
+| `bus/{sample}/matrix.ec` | MTX | Equivalence class |
+| `bus/{sample}/output.bus` | BUS | Output |
+| `bus/{sample}/run_info.json` | JSON | Run information |
+| `bus/{sample}/transcripts.txt` | TXT | Transcript names |
+| `index/{genome}.indx` | TXT | Transcript names |
+
+<br>
+
+### **Bustools**
+
+The `bustools` directory contains the output files generated by the `correct`, `sort`, `capture`, and `count` commands:
+
+
+| File | Format | Description |
+| --- | --- | --- |
+| `{sample}.correct.bus` | BUS | Corrected BUS file |
+| `{sample}.sort.bus` | BUS | Sorted BUS file |
+| `{sample}.spliced.bus` | BUS | Spliced BUS file |
+| `{sample}.unspliced.bus` | BUS | Unspliced BUS file |
+| `{sample}.spliced.barcodes.txt` | TXT | Cell barcodes |
+| `{sample}.spliced.genes.txt` | TXT | Genes |
+| `{sample}.spliced.mtx` | MTX | Spliced counts |
+| `{sample}.unspliced.barcodes.txt` | TXT | Barcodes |
+| `{sample}.unspliced.genes.txt` | TXT | Genes |
+| `{sample}.unspliced.mtx` | MTX | Unspliced counts |
+
+<br>
+
+### **SingleCellExperiment**
+
+The `singlecellexperiment` directory contains R object files containing a SingleCellExperiment object for each subworkflow:
+
+| File | Format | Description |
+| --- | --- | --- |
+| `{sample}.kallisto.rds` | RDS | SingleCellExperiment object from Kallisto workflow|
+| `{sample}.salmon.rds` | RDS | SingleCellExperiment object from Salmon workflow |
+| `{sample}.star.rds` | RDS | SingleCellExperiment object from STAR workflow |
+
+<br>
+
+### **Gffread**
+
+The `gffread` directory contains the output files generated by the `gffread` utility:
+
+| File | Format | Description |
+| --- | --- | --- |
+| `{genome}.id2name.tsv` | TSV | The gene_id to gene_name annotation table |
+| `{genome}.mrna.txt` | TXT | The mRNA gene_id annotation table |
+| `{genome}.rrna.txt` | TXT | The rRNA gene_id annotation table |
+| `{genome}.tx2gene.tsv` | TSV | The transcript_id to gene_id annotation table |
+
+<br>
+
+## Contributing
+---
+
+To contribute to this workflow, clone the repository locally and commit your code on a separate branch. Please generate unit tests for your code, and run the linter before opening a pull-request:
 
 ```sh
-snakemake --generate-unit-tests # generate unit tests
-snakemake --lint # run the linter
+snakemake --generate-unit-tests
+snakemake --lint
 ```
 
 You can find more detail in our [Contributing Guide](#). Participation in this open source project is subject to a [Code of Conduct](#).
 
-Thanks
-------
+## Citations
+---
 
-I would like to thank Johannes Köster for developing the Snakemake workflow engine and Istvan Albert for writing the biostar handbook.
 
-License
--------
+## Thanks
+---
+
+Thank you to 
+
+
+## License
+---
 
 This workflow is licensed under the [MIT](#) license.  
 Copyright &copy; 2020, James Ashmore
