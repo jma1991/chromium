@@ -1,376 +1,185 @@
 # Chromium <img align="right" width="200" src="images/roundel.png">
 
-3' Single Cell Gene Expression
+Processing of scRNA-seq data
 
-[![DOI](https://zenodo.org/badge/234527100.svg)](https://zenodo.org/badge/latestdoi/234527100)
-[![Snakemake][shield-snakemake]](https://snakemake.readthedocs.io)
-[![MIT license][shield-license]](https://choosealicense.com/licenses/mit)
+[![Snakemake](https://img.shields.io/badge/snakemake-6.2.1-brightgreen.svg)](https://snakemake.readthedocs.io)
+[![MIT](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
 
-## Table of Contents
+## Contents
 
 * [Introduction](#introduction)
-* [Requirements](#requirements)
+* [Installation](#installation)
 * [Usage](#usage)
-* [Output](#output)
-* [Configuration](#configuration)
+* [Acknowledgements](#acknowledgements)
+* [Authors](#authors)
 * [Contributing](#contributing)
-* [Thanks](#thanks)
+* [Documentation](#documentation)
+* [FAQ](#faq)
+* [Features](#features)
+* [Installation](#installation)
 * [License](#license)
+* [Tests](#tests)
+* [Citation](#citation)
 
 ## Introduction
 
-Chromium is a Snakemake workflow designed to process 3' single cell gene expression data from the 10x Genomics platform. Three different protocols are implemented to obtain both spliced and unspliced abundance estimates:
+Chromium is a Snakemake workflow to pre-process 3' single cell gene expression data from the 10x Genomics platform. It features three different quantification methods to obtain both spliced and unspliced abundance estimates summarised by gene:
 
-1. Kallisto bustools
-2. Salmon alevin
-3. STAR solo
+1. kallisto|bustools
+2. Alevin
+3. STARsolo
 
-## Requirements
+## Installation
 
-Chromium requires the following to run:
+Chromium requires the [Snakemake](https://snakemake.readthedocs.io/en/stable/) workflow management system and [Conda](https://docs.conda.io/projects/conda/en/latest/index.html) package management system to be installed. For instructions, please read their respective documentation. Once available, Chromium and all of its dependencies can be installed with the following commands:
 
-  - [Snakemake](https://snakemake.readthedocs.io/en/stable/)
-  - [Conda](https://docs.conda.io/en/latest/)
+1. Clone workflow into working directory: 
+    
+    ```console
+    $ git clone https://github.com/jashmore/chromium.git
+    ```
+
+2. Change to workflow directory:
+
+    ```console
+    $ cd chromium
+    ```
+
+3. Install required conda environments:
+
+    ```console
+    $ snakemake --use-conda --conda-create-envs-only
+    ```
 
 ## Usage
 
-Clone workflow into working directory:
+1. Clone workflow into working directory:
 
-```sh
-git clone https://github.com/jashmore/chromium.git
-```
+    ```console
+    $ git clone https://github.com/jashmore/chromium.git
+    ```
 
-Configure workflow using config file:
+2. Change to workflow directory:
 
-```sh
-vim config/config.yaml
-```
+    ```console
+    $ cd chromium
+    ```
 
-Test configuration by performing a dry-run:
+3. Edit workflow configuration:
 
-```sh
-snakemake -n
-```
+    ```console
+    $ vim config/config.yaml   # use your favourite text editor
+    ```
 
-Execute workflow and deploy software dependencies via conda:
+4. Edit samples table:
 
-```sh
-snakemake --use-conda
-```
+    ```console
+    $ vim config/samples.csv   # use your favourite text editor
+    ```
 
-## Configuration
+5. Edit units table:
 
-Configure the workflow by editing the files in the `config` directory:
+    ```console
+    $ vim config/units.csv   # use your favourite text editor
+    ```
 
-- The `config.yaml` file contains the workflow configuration
+6. Test configuration by performing a dry-run:
 
-- The `samples.csv` file contains the sample metadata
+    ```console
+    $ snakemake -n
+    ```
 
-- The `units.csv` file contains the unit metadata
+7. Execute workflow and deploy software dependencies via conda:
 
-### Config
+    ```console
+    $ snakemake --use-conda
+    ```
 
-The `config.yaml` file must contain the following name/value pairs:
+## Acknowledgements
 
+- [RNA velocity with kallisto | bus and velocyto.R](https://bustools.github.io/BUS_notebooks_R/velocity.html)
+- [Alevin velocity](https://combine-lab.github.io/alevin-tutorial/2020/alevin-velocity/)
+- [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf)
+- [Writing a Friendly README](https://rowanmanning.com/posts/writing-a-friendly-readme/)
+- [readme.so](https://readme.so)
 
-| Name | Description | Example |
-| --- | --- | --- |
-| `samples` | Path to the samples.csv file | "config/samples.csv" |
-| `units` | Path to the units.csv file | "config/units.csv" |
-| `source` | Transcriptome source | "Ensembl" |
-| `organism` | Species name | "Homo sapiens" |
-| `release` | Release number | "101" |
-| `genome` | Genome assembly | "GRCh38.p13" |
-| `chemistry` | Chemistry version | "10xv3" |
+## Documentation
 
-Example of a valid `config.yaml` file:
+See [`workflow/documentation.md`](workflow/documentation.md) for the full project documentation.
 
-```yaml
-samples: "config/samples.csv"
-units: "config/units.csv"
-source: "Ensmebl"
-organism: "Homo sapiens"
-release: "101"
-genome: "GRCh38.p13"
-chemistry: "10xv3"
-```
+## FAQ
 
-### **Samples**
+#### Which quantification workflow should I use?
 
-The `samples.csv` file must contain the following columns:
+I would suggest there is no best workflow, each one captures a unique aspect of the data by the counting strategies they have implemented. For a more in-depth discussion, please refer to this research article by Soneson and colleagues: https://doi.org/10.1371/journal.pcbi.1008585
 
-| Column | Description | Example |
-| --- | --- | --- |
-| `sample` | Sample name | "S1" |
+#### What reference genomes are supported?
 
-Example of a valid `samples.csv` file:
+The workflow uses `genomepy` and `gffread` to download and parse the user-specified reference genome and annotation. Theoretically, any genome release compatible with these software should be supported.
 
-```
-sample,condition
-S1,control
-S2,treatment
-```
+#### How do I combine multiple sequencing runs?
 
-### Units
-
-The `units.csv` file must contain the following columns:
-
-| Column | Description | Example |
-| --- | --- | --- |
-| `sample` | Sample name | "S1" |
-| `unit` | Unit name | "L001" |
-| `read1` | Read 1 | "S1_L001_1.fastq.gz" |
-| `read2` | Read 2 | "S1_L001_2.fastq.gz" |
-
-Example of a valid `units.csv` file:
+If the sequencing runs were performed across multiple lanes on the same date, it is unlikely that a batch effect is present and I would recommend quantifying the files all together. Below is an example of how to specify multiple sequencing runs jointly for a given sample: 
 
 ```
 sample,unit,read1,read2
-S1,L001,S1_L001_1.fastq.gz,S1_L001_2.fastq.gz
-S1,L002,S1_L002_1.fastq.gz,S1_L002_2.fastq.gz
-S2,L001,S2_L001_1.fastq.gz,S2_L001_2.fastq.gz
-S2,L002,S2_L002_1.fastq.gz,S2_L002_2.fastq.gz
+S1,L001,S1_L001.fastq.gz,S1_L001.fastq.gz
+S1,L002,S1_L002.fastq.gz,S1_L002.fastq.gz
 ```
 
-## Output
-
-The workflow generates the following output files in the results directory:
+Alternatively, if the sequencing runs were performed on different machines and different dates, there is potential for a batch effect and I would recommend quantifying the files separately until this can be investigated. Below is an example of how to specify multiple sequencing runs independently for a given sample:
 
 ```
-results
-│
-├── busparse
-│   ├── {genome}.cDNA_introns.fa
-│   ├── {genome}.cDNA_tx_to_capture.txt
-│   ├── {genome}.introns_tx_to_capture.txt
-│   └── {genome}.tr2g.tsv
-│
-├── bustools
-│   ├── {sample}.correct.bus
-│   ├── {sample}.sort.bus
-│   ├── {sample}.spliced.bus
-│   ├── {sample}.unspliced.bus
-│   ├── {sample}.spliced.mtx
-│   ├── {sample}.spliced.barcodes.txt
-│   ├── {sample}.spliced.genes.txt
-│   ├── {sample}.unspliced.mtx
-│   ├── {sample}.unspliced.barcodes.txt
-│   └── {sample}.unspliced.genes.txt
-│
-├── eisar
-│   ├── {genome}.annotation.gtf
-│   ├── {genome}.fa
-│   ├── {genome}.features.tsv
-│   ├── {genome}.ranges.rds
-│   └── {genome}.tx2gene.tsv
-│
-├── genomepy
-│   ├── {genome}.annotation.bed.gz
-│   ├── {genome}.annotation.gtf.gz
-│   ├── {genome}.fa
-│   ├── {genome}.fa.fai
-│   ├── {genome}.fa.sizes
-│   ├── {genome}.gaps.bed
-│   └── README.txt
-│
-├── gffread
-│   ├── {genome}.id2name.tsv
-│   ├── {genome}.mrna.txt
-│   ├── {genome}.rrna.txt
-│   └── {genome}.tx2gene.tsv
-│
-├── kallisto
-│   ├── bus
-│   │   └── {sample}
-│   │       ├── matrix.ec
-│   │       ├── output.bus
-│   │       ├── run_info.json
-│   │       └── transcripts.txt
-│   └── index
-│       └── {genome}.idx
-│
-├── salmon
-│   ├── genome
-│   │   └── {genome}
-│   │       ├── decoys.txt
-│   │       └── gentrome.fa
-│   └── index
-│       └── {genome}
-│
-├── singlecellexperiment
-│   ├── {sample}.kallisto.rds
-│   ├── {sample}.salmon.rds
-│   └── {sample}.star.rds
-│
-└── star
-    ├── align
-    │   └── {sample}
-    │       ├── Aligned.sortedByCoord.out.bam
-    │       └── Solo.out
-    │           ├── Gene
-    │           └── Velocyto
-    └── index
-        └── {genome}
+sample,unit,read1,read2
+S1_L001,L001,S1_L001.fastq.gz,S1_L001.fastq.gz
+S1_L002,L002,S1_L002.fastq.gz,S1_L002.fastq.gz
 ```
 
-### Eisar
-
-The `eisar` directory contains the output files generated by the 
-
-| File | Format | Description |
-| --- | --- | --- |
-| `{genome}.annotation.gtf` | GTF |  |
-| `{genome}.fa` | FASTA |  |
-| `{genome}.features.tsv` | TSV |  |
-| `{genome}.ranges.rds` | RDS | GRangesList object |
-| `{genome}.tx2gene.tsv` | TSV | Transcript to gene ID|
-
-### Busparse
-
-The `busparse` directory contains the output files generated by the `get_velocity_files` and `read_velocity_files` functions:
-
-| File | Format | Description |
-| --- | --- | --- |
-| `{genome}.cDNA_introns.fa` | FASTA | Spliced transcripts and introns |
-| `{genome}.cDNA_tx_to_capture.txt` | TXT | Transcript IDs of spliced transcripts |
-| `{genome}.introns_tx_to_capture.txt` | TXT | Transcript IDs of introns |
-| `{genome}.tr2g.tsv` | TSV | Transcripts and introns to genes |
-
-### Genomepy
-
-The `genomepy` directory contains the output files generated by the `install` command:
-
-| File | Format | Description |
-| --- | --- | --- |
-| `{genome}.annotation.bed.gz` | BED | Gene annotation |
-| `{genome}.annotation.gtf.gz` | GTF | Gene annotation |
-| `{genome}.fa` | FASTA | Genome sequence |
-| `{genome}.fa.sizes` | TXT | Chromosome sizes |
-| `{genome}.gaps.bed` | BED | Gap locations |
-| `README.txt` | TXT | README |
-
-### Salmon
-
-The `salmon` directory contains the output files generated by the `index` and `alevin` commands:
-
-| File | Format | Description |
-| --- | --- | --- |
-| `alevin/{sample}/quants_mat.gz` |  | Compressed count matrix |
-| `alevin/{sample}/quants_mat_cols.txt` | TXT | Column header (gene_id) of the matrix |
-| `alevin/{sample}/quants_mat_rows.txt` | TXT | Row index (CB-ids) of the matrix |
-| `alevin/{sample}/quants_tier_mat.gz` |  | Tier categorization of the matrix |
-| `index/{genome}` |  | Tier categorization of the matrix |
-
-### Star
-
-The `star` directory contains the output files generated by the `genomeGenerate` and `alignReads` commands:
-
-| File | Format | Description |
-| --- | --- | --- |
-| `align/{sample}/Aligned.sortedByCoord.out.bam` | BAM | Alignments |
-| `align/{sample}/Solo.out/Gene` | DIR | Gene directory |
-| `align/{sample}/Solo.out/Velocyto` | DIR | Velocyto directory |
-
-### Kallisto
-
-The `kallisto` directory contains the output files generated by the `index` and `bus` commands:
-
-| File | Format | Description |
-| --- | --- | --- |
-| `bus/{sample}/matrix.ec` | MTX | Equivalence class |
-| `bus/{sample}/output.bus` | BUS | Output |
-| `bus/{sample}/run_info.json` | JSON | Run information |
-| `bus/{sample}/transcripts.txt` | TXT | Transcript names |
-| `index/{genome}.indx` | TXT | Transcript names |
-
-### Bustools
-
-The `bustools` directory contains the output files generated by the `correct`, `sort`, `capture`, and `count` commands:
+#### 
 
 
-| File | Format | Description |
-| --- | --- | --- |
-| `{sample}.correct.bus` | BUS | Corrected BUS file |
-| `{sample}.sort.bus` | BUS | Sorted BUS file |
-| `{sample}.spliced.bus` | BUS | Spliced BUS file |
-| `{sample}.unspliced.bus` | BUS | Unspliced BUS file |
-| `{sample}.spliced.barcodes.txt` | TXT | Cell barcodes |
-| `{sample}.spliced.genes.txt` | TXT | Genes |
-| `{sample}.spliced.mtx` | MTX | Spliced counts |
-| `{sample}.unspliced.barcodes.txt` | TXT | Barcodes |
-| `{sample}.unspliced.genes.txt` | TXT | Genes |
-| `{sample}.unspliced.mtx` | MTX | Unspliced counts |
 
-### SingleCellExperiment
 
-The `singlecellexperiment` directory contains R object files with a SingleCellExperiment class:
 
-| File | Format | Description |
-| --- | --- | --- |
-| `{sample}.kallisto.rds` | RDS | SingleCellExperiment object from Kallisto workflow|
-| `{sample}.salmon.rds` | RDS | SingleCellExperiment object from Salmon workflow |
-| `{sample}.star.rds` | RDS | SingleCellExperiment object from STAR workflow |
 
-The SingleCellExperiment class contains the `counts`, `unspliced`, and `spliced` assays. The `unspliced` and `spliced` assays can be used to calculate RNA velocity.
+## Authors
 
-### Gffread
+Chromium was initially developed by [James Ashmore](https://www.github.com/jma1991) but has benefited from contributions by many individuals in the community:
 
-The `gffread` directory contains the output files generated by the `gffread` utility:
+- [Benjamin Southgate](#)
+- [Alastair Kilpatrick](#)
 
-| File | Format | Description |
-| --- | --- | --- |
-| `{genome}.id2name.tsv` | TSV | The gene_id to gene_name annotation table |
-| `{genome}.mrna.txt` | TXT | The mRNA gene_id annotation table |
-| `{genome}.rrna.txt` | TXT | The rRNA gene_id annotation table |
-| `{genome}.tx2gene.tsv` | TSV | The transcript_id to gene_id annotation table |
+
+## Features
+
+Chromium offers the following features:
+
+- Performs spliced and unspliced transcript quantification
+- Implements multiple pre-processing workflows: Kallisto-bustools, Salmon-alevin, and STAR-solo
+- Supports Single Cell 3' v1, v2, v3, and LT chemistry
+- Outputs SingleCellExperiment objects for downstream analysis
 
 ## Contributing
 
-To contribute to this workflow, clone the repository locally and commit your code on a separate branch. Please generate unit tests for your code, and run the linter before opening a pull-request:
+To contribute to Chromium, clone this repository locally and commit your code on a separate branch. Please generate unit tests for your code and run the linter before opening a pull-request:
 
-```sh
-snakemake --generate-unit-tests
-snakemake --lint
+```console
+$ snakemake --generate-unit-tests   # generate unit tests
+$ snakemake --lint                  # run the linter
 ```
 
-You can find more detail in our [Contributing Guide](#). Participation in this open source project is subject to a [Code of Conduct](#).
+You can find more details in our [Contributing](CONTRIBUTING.md) guide. Participation in this open source project is subject to a [Code of Conduct](CODE_OF_CONDUCT.md).
 
-## Citations
+## Tests
 
-Chromium relies on the following open-source software:
+Test cases are in the `.test` directory. They are automatically executed via  
+continuous integration with GitHub Actions.
 
-* Bustools [Melsted, P., Booeshaghi, A.S., Liu, L. et al. Modular, efficient and constant-memory single-cell RNA-seq preprocessing. Nat Biotechnol (2021). https://doi.org/10.1038/s41587-021-00870-2]
+## Citation
 
-* Kallisto [Bray, N., Pimentel, H., Melsted, P. et al. Near-optimal probabilistic RNA-seq quantification. Nat Biotechnol 34, 525–527 (2016). https://doi.org/10.1038/nbt.3519]
-
-* BUSpaRse [Moses L, Pachter L (2021). BUSpaRse: kallisto | bustools R utilities. R package version 1.4.2, https://github.com/BUStools/BUSpaRse.]
-
-* genomepy [Heeringen, (2017), genomepy: download genomes the easy way, Journal of Open Source Software, 2(16), 320, doi:10.21105/joss.00320]
-
-* gffread [Pertea G and Pertea M. GFF Utilities: GffRead and GffCompare [version 2; peer review: 3 approved]. F1000Research 2020, 9:304 (https://doi.org/10.12688/f1000research.23297.2)]
-
-* Snakemake [Mölder F, Jablonski KP, Letcher B et al. Sustainable data analysis with Snakemake [version 1; peer review: 1 approved, 1 approved with reservations]. F1000Research 2021, 10:33 (https://doi.org/10.12688/f1000research.29032.1)]
-
-* Alevin [Srivastava, A., Malik, L., Smith, T. et al. Alevin efficiently estimates accurate gene abundances from dscRNA-seq data. Genome Biol 20, 65 (2019). https://doi.org/10.1186/s13059-019-1670-y]
-
-* SingleCellExperiment [Amezquita, R.A., Lun, A.T.L., Becht, E. et al. Orchestrating single-cell analysis with Bioconductor. Nat Methods 17, 137–145 (2020). https://doi.org/10.1038/s41592-019-0654-x]
-
-* STAR [Dobin A, Davis CA, Schlesinger F, Drenkow J, Zaleski C, Jha S, Batut P, Chaisson M, Gingeras TR. STAR: ultrafast universal RNA-seq aligner. Bioinformatics. 2013 Jan 1;29(1):15-21. doi: 10.1093/bioinformatics/bts635. Epub 2012 Oct 25. PMID: 23104886; PMCID: PMC3530905.]
-
-* eisaR [Gaidatzis, D., Burger, L., Florescu, M. et al. Analysis of intronic and exonic reads in RNA-seq data characterizes transcriptional and post-transcriptional regulation. Nat Biotechnol 33, 722–729 (2015). https://doi.org/10.1038/nbt.3269]
-
-* bioconda [Grüning, Björn, Ryan Dale, Andreas Sjödin, Brad A. Chapman, Jillian Rowe, Christopher H. Tomkins-Tinch, Renan Valieris, the Bioconda Team, and Johannes Köster. 2018. “Bioconda: Sustainable and Comprehensive Software Distribution for the Life Sciences”. Nature Methods, 2018 doi:10.1038/s41592-018-0046-7.]
-
-## Thanks
-
-Thank you to 
-
+If you use Chromium in your research, please cite using
 
 ## License
 
-This workflow is licensed under the [MIT](#) license.  
+Chromium is licensed under the [MIT](LICENSE) license.  
 Copyright &copy; 2020, James Ashmore
-
-
-[shield-snakemake]: https://img.shields.io/badge/snakemake-≥5.6.0-brightgreen.svg
-[shield-license]: https://img.shields.io/badge/license-MIT-blue.svg
