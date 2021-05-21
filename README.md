@@ -1,4 +1,4 @@
-# Chromium <img align="right" width="160" src="images/roundel.png">
+# Chromium <img align="right" width="200" src="images/roundel.png">
 
 A Snakemake workflow to process scRNA-seq data from 10x Genomics
 
