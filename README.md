@@ -1,6 +1,6 @@
 # Chromium <img align="right" width="200" src="images/roundel.png">
 
-A Snakemake workflow to pre-process scRNA-seq data from 10x Genomics
+A Snakemake workflow to process scRNA-seq data from 10x Genomics
 
 ## Contents
 
@@ -16,7 +16,7 @@ A Snakemake workflow to pre-process scRNA-seq data from 10x Genomics
 
 ## Overview
 
-Chromium is a Snakemake workflow to pre-process 3' single cell RNA sequencing data from the 10x Genomics platform. It is compatible with 10xv2 and 10xv3 chemistry and features three different quantification methods to obtain both spliced and unspliced abundance estimates:
+Chromium is a Snakemake workflow to process 3' single cell RNA sequencing data from the 10x Genomics platform. It is compatible with 10xv2 and 10xv3 chemistry and features three different quantification methods to obtain both spliced and unspliced abundance estimates:
 
 * [Kallisto/Bustools](https://doi.org/10.1038/s41587-021-00870-2)
 * [Alevin](https://doi.org/10.1186/s13059-019-1670-y)
@@ -52,6 +52,11 @@ Chromium and all of its dependencies can be installed via the [mamba](https://gi
 
 ## Usage
 
+Chromium 
+
+
+
+
 1. Create workflow configuration
 
    ```console
@@ -82,9 +87,12 @@ Chromium and all of its dependencies can be installed via the [mamba](https://gi
     $ snakemake --cores all --use-conda
     ```
 
+
+> For more information, see the [Usage](workflow/documentation.md#usage) section of the documentation.
+
 ## Documentation
 
-Full documentation is available [here](workflow/documentation.md)
+Full documentation for Chromium is available [here](workflow/documentation.md)
 
 ## Support
 
@@ -109,7 +117,9 @@ $ snakemake --generate-unit-tests   # generate unit tests
 $ snakemake --lint                  # run the linter
 ```
 
-You can find more details in the [Contributing](CONTRIBUTING.md) guide. Participation in this open source project is subject to a [Code of Conduct](CODE_OF_CONDUCT.md).
+You can find more details in the [Contributing](CONTRIBUTING.md) guide. 
+
+Participation in this project is subject to a [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Authors
 
@@ -120,17 +130,13 @@ Chromium was developed by [James Ashmore](https://www.github.com/jma1991) but ha
 
 If you would like to be added to this list, please open a [pull request](https://github.com/jma1991/scrnaseq/pulls) with your contribution.
 
-## Tests
-
-Test cases are in the `.test` directory. They are automatically executed via continuous integration with GitHub Actions.
-
 ## Citation
 
 If you use Chromium in your research, please cite using
 
 ## Used By
 
-Chromium is used by the following companies and institutes:
+Chromium is used by the following institutes:
 
 - [The Centre for Regenerative Medicine (The University of Edinburgh)](https://www.ed.ac.uk/regenerative-medicine)
 
