@@ -16,35 +16,41 @@ A Snakemake workflow to pre-process scRNA-seq data from 10x Genomics
 
 ## Overview
 
-Chromium is a Snakemake workflow to pre-process 3' single cell RNA sequencing
-data from the 10x Genomics platform. It is compatible with 10xv2 and 10xv3
-chemistry and features three different quantification methods to obtain both
-spliced and unspliced abundance estimates:
+Chromium is a Snakemake workflow to pre-process 3' single cell RNA sequencing data from the 10x Genomics platform. It is compatible with 10xv2 and 10xv3 chemistry and features three different quantification methods to obtain both spliced and unspliced abundance estimates:
 
-* [kallisto/bustools](https://doi.org/10.1038/s41587-021-00870-2)
-* [alevin](https://doi.org/10.1186/s13059-019-1670-y)
-* [starsolo](https://doi.org/10.1101/2021.05.05.442755)
-
-The workflow outputs a SingleCellExperiment object for each method containing
-count data for each gene and cell across all samples.
+* [Kallisto/Bustools](https://doi.org/10.1038/s41587-021-00870-2)
+* [Alevin](https://doi.org/10.1186/s13059-019-1670-y)
+* [STARsolo](https://doi.org/10.1101/2021.05.05.442755)
 
 ## Installation
 
-Chromium requires the following to be installed:
+Chromium and all of its dependencies can be installed via the [mamba](https://github.com/mamba-org/mamba) package manager:
 
-- [conda](https://docs.conda.io/en/latest/index.html)
-- [snakedeploy](https://snakedeploy.readthedocs.io/en/latest/)
-- [snakemake](https://snakemake.readthedocs.io/en/stable/index.html)
-
-Install Chromium with snakedeploy:
+1. Install Snakemake and Snakedeploy
 
    ```console
-   $ snakedeploy deploy-workflow https://github.com/jma1991/chromium path/to/project
+   $ mamba create -c bioconda -c conda-forge --name snakemake snakemake snakedeploy
+   ```
+
+2. Activate the Snakemake environment
+
+   ```console
+   $ mamba activate snakemake
+   ```
+
+3. Create a project directory
+
+   ```console
+   $ mkdir -p path/to/project
+   ```
+
+4. Deploy the workflow in the project directory
+
+   ```console
+   $ snakedeploy deploy-workflow https://github.com/snakemake-workflows/chromium path/to/project
    ```
 
 ## Usage
-
-To run Chromium, follow these instructions:
 
 1. Create workflow configuration
 
@@ -76,37 +82,23 @@ To run Chromium, follow these instructions:
     $ snakemake --cores all --use-conda
     ```
 
-
-## Roadmap
-
-Chromium 
-
-- Support 10xv1 chemistry
-- 
-
-
-
 ## Documentation
 
 Full documentation is available [here](workflow/documentation.md)
 
-
-## Features
-
-Chromium has the following:
-
-- 
-- compatible with
-
-
-
 ## Support
 
-If you need any support, please open an [issue](https://github.com/jma1991/scrnaseq/issues) and apply either the *help wanted* or *question* label.
+If you need any help, open an [issue](https://github.com/jma1991/scrnaseq/issues) with one of the following labels:
+
+- help wanted (extra attention is needed)
+- question (further information is requested)
 
 ## Feedback
 
-If you have any feedback, please open an [issue](https://github.com/jma1991/scrnaseq/issues) and apply the appropriate label
+If you have any suggestions, open an [issue](https://github.com/jma1991/scrnaseq/issues) with one of the following labels:
+
+- documentation (improvements or additions to documentation)
+- enhancement (new feature or request)
 
 ## Contributing
 
@@ -130,8 +122,7 @@ If you would like to be added to this list, please open a [pull request](https:/
 
 ## Tests
 
-Test cases are in the `.test` directory. They are automatically executed via  
-continuous integration with GitHub Actions.
+Test cases are in the `.test` directory. They are automatically executed via continuous integration with GitHub Actions.
 
 ## Citation
 
