@@ -21,9 +21,9 @@ data from the 10x Genomics platform. It is compatible with 10xv2 and 10xv3
 chemistry and features three different quantification methods to obtain both
 spliced and unspliced abundance estimates:
 
-* [Kallisto/Bustools](https://doi.org/10.1038/s41587-021-00870-2)
-* [Alevin](https://doi.org/10.1186/s13059-019-1670-y)
-* [STARsolo](https://doi.org/10.1101/2021.05.05.442755)
+* [kallisto/bustools](https://doi.org/10.1038/s41587-021-00870-2)
+* [alevin](https://doi.org/10.1186/s13059-019-1670-y)
+* [starsolo](https://doi.org/10.1101/2021.05.05.442755)
 
 The workflow outputs a SingleCellExperiment object for each method containing
 count data for each gene and cell across all samples.
