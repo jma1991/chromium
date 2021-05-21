@@ -9,7 +9,9 @@
 !workflow/rules/*
 !workflow/rules/annotation/*
 !workflow/resources/*
-!LICENSE
+!CODE_OF_CONDUCT.md
+!CONTRIBUTING.md
+!LICENSE.md
 !README.md
 !.gitignore
 !.gitattributes
