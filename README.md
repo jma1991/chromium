@@ -87,8 +87,7 @@ Chromium
     $ snakemake --cores all --use-conda
     ```
 
-
-> For more information, see the [Usage](workflow/documentation.md#usage) section of the documentation.
+*For more information, see the [Usage](workflow/documentation.md#usage) section of the documentation.*
 
 ## Documentation
 
