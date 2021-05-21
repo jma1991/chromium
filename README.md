@@ -95,14 +95,14 @@ Full documentation for Chromium is available [here](workflow/documentation.md)
 
 ## Support
 
-If you need any help, open an [issue](https://github.com/jma1991/scrnaseq/issues) with one of the following labels:
+If you need help getting started, open an [issue](https://github.com/jma1991/scrnaseq/issues) with one of the following labels:
 
 - help wanted (extra attention is needed)
 - question (further information is requested)
 
 ## Feedback
 
-If you have any suggestions, open an [issue](https://github.com/jma1991/scrnaseq/issues) with one of the following labels:
+If you have any suggestions for improvements, open an [issue](https://github.com/jma1991/scrnaseq/issues) with one of the following labels:
 
 - documentation (improvements or additions to documentation)
 - enhancement (new feature or request)
