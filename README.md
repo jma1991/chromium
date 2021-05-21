@@ -95,14 +95,14 @@ Full documentation for Chromium is available [here](workflow/documentation.md)
 
 ## Support
 
-If you need help getting started, open an [issue](https://github.com/jma1991/scrnaseq/issues) with one of the following labels:
+If you need help, open an [issue](https://github.com/jma1991/scrnaseq/issues) with one of the following labels:
 
 - help wanted (extra attention is needed)
 - question (further information is requested)
 
 ## Feedback
 
-If you have any suggestions for improvements, open an [issue](https://github.com/jma1991/scrnaseq/issues) with one of the following labels:
+If you have any suggestions, open an [issue](https://github.com/jma1991/scrnaseq/issues) with one of the following labels:
 
 - documentation (improvements or additions to documentation)
 - enhancement (new feature or request)
@@ -150,6 +150,11 @@ Here are some related projects:
 - [crazyhottommy/pyflow-cellranger](https://github.com/crazyhottommy/pyflow-cellranger)
 
 ## Acknowledgements
+
+The methods were chosen based on this research paper:
+
+> Soneson C, Srivastava A, Patro R, Stadler MB (2021) Preprocessing choices affect RNA velocity results for droplet scRNA-seq data. PLoS Comput Biol 17(1): e1008585. https://doi.org/10.1371/journal.pcbi.1008585
+
 
 The wokflow was motivated by the following projects:
 
