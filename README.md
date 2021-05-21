@@ -1,10 +1,10 @@
 # Chromium <img align="right" width="200" src="images/roundel.png">
 
-A Snakemake workflow to process scRNA-seq data from 10x Genomics
+A Snakemake workflow to pre-process scRNA-seq data from 10x Genomics
 
 ## Contents
 
-* [Description](#overview)
+* [Overview](#overview)
 * [Installation](#installation)
 * [Usage](#usage)
 * [Documentation](#documentation)
@@ -14,10 +14,19 @@ A Snakemake workflow to process scRNA-seq data from 10x Genomics
 * [Acknowledgements](#acknowledgements)
 * [License](#license)
 
-## Description
+## Overview
 
-Chromium is a Snakemake workflow to pre-process 3' single cell gene expression data from the 10x Genomics platform. It is compatible with 10xv2 and 10xv3 chemistry and features three different methods to obtain spliced and unspliced abundance estimates.
+Chromium is a Snakemake workflow to pre-process 3' single cell RNA sequencing
+data from the 10x Genomics platform. It is compatible with 10xv2 and 10xv3
+chemistry and features three different quantification methods to obtain both
+spliced and unspliced abundance estimates:
 
+* [Kallisto/Bustools](https://doi.org/10.1038/s41587-021-00870-2)
+* [Alevin](https://doi.org/10.1186/s13059-019-1670-y)
+* [STARsolo](https://doi.org/10.1101/2021.05.05.442755)
+
+The workflow outputs a SingleCellExperiment object for each method containing
+count data for each gene and cell across all samples.
 
 ## Installation
 
