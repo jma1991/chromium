@@ -22,6 +22,11 @@ Chromium is a Snakemake workflow to process 3' single cell RNA sequencing data f
 * [Alevin](https://doi.org/10.1186/s13059-019-1670-y)
 * [STARsolo](https://doi.org/10.1101/2021.05.05.442755)
 
+## Features
+
+- [] Hello
+- [] Goodbye
+
 ## Installation
 
 Chromium and all of its dependencies can be installed via the [mamba](https://github.com/mamba-org/mamba) package manager:
@@ -52,7 +57,7 @@ Chromium and all of its dependencies can be installed via the [mamba](https://gi
 
 ## Usage
 
-Chromium 
+Chromium is typically executed
 
 
 
@@ -60,19 +65,19 @@ Chromium
 1. Create workflow configuration
 
    ```console
-   $ vim config/config.yaml
+   $ vim config/config.yaml   # workflow parameters
    ```
 
 2. Create samples table
 
    ```console
-   $ vim config/samples.csv
+   $ vim config/samples.csv   # sample metadata
    ```
 
 3. Create units table
 
    ```console
-   $ vim config/units.csv
+   $ vim config/units.csv   # unit metdata
    ```
 
 4. Test configuration by performing a dry-run
@@ -135,19 +140,11 @@ If you use Chromium in your research, please cite using
 
 ## Used By
 
-Chromium is used by the following institutes:
+Chromium is used by the following companies and institutes:
 
 - [The Centre for Regenerative Medicine (The University of Edinburgh)](https://www.ed.ac.uk/regenerative-medicine)
 
 If you would like to be added to this list, please open a [pull request](https://github.com/jma1991/scrnaseq/pulls) with your information.
-
-## Related
-
-Here are some related projects:
-
-- [Hoohm/dropSeqPipe](https://github.com/Hoohm/dropSeqPipe)
-- [snakemake-workflows/single-cell-rna-seq](https://github.com/snakemake-workflows/single-cell-rna-seq)
-- [crazyhottommy/pyflow-cellranger](https://github.com/crazyhottommy/pyflow-cellranger)
 
 ## Acknowledgements
 
@@ -155,8 +152,7 @@ The methods were chosen based on this research paper:
 
 > Soneson C, Srivastava A, Patro R, Stadler MB (2021) Preprocessing choices affect RNA velocity results for droplet scRNA-seq data. PLoS Comput Biol 17(1): e1008585. https://doi.org/10.1371/journal.pcbi.1008585
 
-
-The wokflow was motivated by the following projects:
+The workflow was motivated by the following projects:
 
 - [nf-core/scrnaseq](https://github.com/nf-core/scrnaseq)
 - [maxplanck-ie/snakepipes](https://github.com/maxplanck-ie/snakepipes)
