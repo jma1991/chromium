@@ -2,6 +2,8 @@
 
 A Snakemake workflow to process scRNA-seq data from 10x Genomics
 
+[![DOI](https://zenodo.org/badge/287750880.svg)](https://zenodo.org/badge/latestdoi/287750880)
+
 ## Contents
 
 * [Overview](#overview)
@@ -126,7 +128,7 @@ If you would like to be added to this list, please open a [pull request](https:/
 
 ## Citation
 
-If you use Chromium in your research, please cite using
+If you use Chromium in your research, please cite using https://zenodo.org/badge/latestdoi/287750880
 
 ## Used By
 
