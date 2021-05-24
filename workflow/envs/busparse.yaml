@@ -4,4 +4,4 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - bioconductor-busparse=1.2.1
+  - bioconductor-busparse

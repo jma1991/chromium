@@ -1,4 +1,7 @@
-#!/usr/bin/env Rscript
+# Author: James Ashmore
+# Copyright: Copyright 2020, James Ashmore
+# Email: jashmore@ed.ac.uk
+# License: MIT
 
 main <- function(input, output, params, wildcards) {
 

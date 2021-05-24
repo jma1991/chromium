@@ -1,6 +1,21 @@
-#!/usr/bin/env Rscript
+# Author: James Ashmore
+# Copyright: Copyright 2020, James Ashmore
+# Email: jashmore@ed.ac.uk
+# License: MIT
 
-main <- function(input, output, wildcards) {
+main <- function(input, output, log, wildcards) {
+
+
+    # Log function
+
+    out <- file(log$out, open = "wt")
+
+    err <- file(log$err, open = "wt")
+
+    sink(out, type = "output")
+
+    sink(err, type = "message")
+
 
     # Load Bioconductor packages
 
@@ -12,11 +27,15 @@ main <- function(input, output, wildcards) {
 
     library(SingleCellExperiment)
 
+
     # Import salmon quantification
 
-    txi <- tximport(input$mat, type = "alevin", dropInfReps = FALSE)
+    con <- file.path(input$dir, wildcards$sample_name, "alevin", "quants_mat.gz")
+
+    txi <- tximport(con, type = "alevin", dropInfReps = FALSE)
     
     rse <- SummarizedExperiment(assays = list(counts = round(txi$counts)))
+
 
     # Split by spliced and unspliced
     
@@ -24,13 +43,15 @@ main <- function(input, output, wildcards) {
     
     rse <- splitSE(rse, dat, assayName = "counts")
 
+
     # Import and match annotation
 
     ann <- read.delim(input$tsv[2], header = FALSE, col.names = c("id", "name"))
 
     ann <- ann[match(rownames(rse), ann$id), ]
 
-    # Create expanded SCE object
+
+    # Create SCE object
 
     sce <- SingleCellExperiment(
         assays = list(
@@ -43,15 +64,17 @@ main <- function(input, output, wildcards) {
             Symbol = ann$name
         ),
         colData = DataFrame(
-            Sample = wildcards$sample,
+            Sample = wildcards$sample_name,
             Barcode = colnames(rse)
         )
     )
 
-    # Save SCE object to disk
+
+    # Save SCE object
 
     saveRDS(sce, file = output$rds)
 
+
 }
 
-main(snakemake@input, snakemake@output, snakemake@wildcards)
+main(snakemake@input, snakemake@output, snakemake@log, snakemake@wildcards)

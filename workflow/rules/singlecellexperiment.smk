@@ -5,12 +5,15 @@
 
 rule singlecellexperiment_kallisto:
     input:
-        mtx = expand("results/bustools/{{sample}}/output.correct.sort.{feature}.mtx", feature = ["spliced", "unspliced"]),
-        tsv = "results/gffread/GRCm38.p6/GRCm38.p6.id2name.tsv"
+        rds = "results/busparse/read_velocity_output/{sample}.rds",
+        tsv = expand("results/gffread/{genome}/{genome}.id2name.tsv", genome = config["genome"])
     output:
-        rds = "results/singlecellexperiment/{sample}.kallisto.rds"
+        rds = "results/singlecellexperiment/kallisto/{sample}.rds"
     params:
-        out = "results/bustools/{sample}"
+        out = "results/bustools/count/{sample}"
+    log:
+        out = "results/singlecellexperiment/kallisto/{sample}.out",
+        err = "results/singlecellexperiment/kallisto/{sample}.err"
     message:
         "[singlecellexperiment] Create a SingleCellExperiment object from Kallisto output directory: {params.out}"
     conda:
@@ -20,12 +23,13 @@ rule singlecellexperiment_kallisto:
 
 rule singlecellexperiment_salmon:
     input:
-        mat = "results/salmon/{sample}/alevin/quants_mat.gz",
-        tsv = ["results/eisar/GRCm38.p6/GRCm38.p6.features.tsv", "results/gffread/GRCm38.p6/GRCm38.p6.id2name.tsv"]
+        dir = "results/salmon/alevin/{sample}",
+        tsv = [expand("results/eisar/{genome}/{genome}.features.tsv", genome = config["genome"]),
+               expand("results/gffread/{genome}/{genome}.id2name.tsv", genome = config["genome"])]
     output:
-        rds = "results/singlecellexperiment/{sample}.salmon.rds"
+        rds = "results/singlecellexperiment/salmon/{sample}.rds"
     params:
-        out = "results/salmon/{sample}/alevin"
+        out = "results/salmon/alevin/{sample}"
     message:
         "[singlecellexperiment] Create a SingleCellExperiment object from Salmon output directory: {params.out}"
     conda:
@@ -35,13 +39,14 @@ rule singlecellexperiment_salmon:
 
 rule singlecellexperiment_star:
     input:
-        mtx = "results/star/solo/{sample}/Solo.out/Velocyto/raw/matrix.mtx"
+        dir = "results/star/align/{sample}"
     output:
-        rds = "results/singlecellexperiment/{sample}/star.rds"
-    params:
-        out = "results/star/solo/{sample}/Solo.out/Velocyto/raw"
+        rds = "results/singlecellexperiment/star/{sample}.rds"
+    log:
+        out = "results/singlecellexperiment/star/{sample}.out",
+        err = "results/singlecellexperiment/star/{sample}.err"
     message:
-        "[singlecellexperiment] Create a SingleCellExperiment object from STAR output directory: {params.out}"
+        "[singlecellexperiment] Create a SingleCellExperiment object from STAR output directory: {input.dir}"
     conda:
         "../envs/singlecellexperiment.yaml"
     script:

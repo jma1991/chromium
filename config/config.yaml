@@ -1,10 +1,13 @@
-# Author: James Ashmore
-# Copyright: Copyright 2020, James Ashmore
-# Email: jashmore@ed.ac.uk
-# License: MIT
+samples: config/samples.csv
 
-samples: config/samples.tsv
+units: config/units.csv
 
-units: config/units.tsv
+source: Ensembl
 
-genome: GRCm38.p6
+organism: Homo sapiens
+
+release: 101
+
+genome: GRCh38.p13
+
+chemistry: 10xv3

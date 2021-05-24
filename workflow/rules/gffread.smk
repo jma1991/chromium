@@ -15,7 +15,7 @@ rule gffread_tx2gene:
     conda:
         "../envs/gffread.yaml"
     shell:
-        "gffread {input} --table transcript_id,gene_id | sort -u 1> {output} 2> {log}"
+        "gffread {input} --table transcript_id,gene_id | sort -u > {output} 2> {log}"
 
 rule gffread_id2name:
     input:
@@ -29,7 +29,7 @@ rule gffread_id2name:
     conda:
         "../envs/gffread.yaml"
     shell:
-        "gffread {input} --table gene_id,gene_name | sort -u 1> {output} 2> {log}"
+        "gffread {input} --table gene_id,gene_name | sort -u > {output} 2> {log}"
 
 rule gffread_mrna:
     input:
@@ -39,11 +39,11 @@ rule gffread_mrna:
     log:
         "results/gffread/{genome}/{genome}.mrna.log"
     message:
-        "[gffread] Create list of mitochondrial genes"
+        "[gffread] Create mRNA annotation table"
     conda:
         "../envs/gffread.yaml"
     shell:
-        "gffread {input} --table @chr,gene_id | grep MT | cut -f 2 | sort -u 1> {output} 2> {log}"
+        "gffread {input} --table @chr,gene_id | grep MT | cut -f 2 | sort -u > {output} 2> {log}"
 
 rule gffread_rrna:
     input:
@@ -53,8 +53,8 @@ rule gffread_rrna:
     log:
         "results/gffread/{genome}/{genome}.rrna.log"
     message:
-        "[gffread] Create list of ribosomal genes"
+        "[gffread] Create rRNA annotation table"
     conda:
         "../envs/gffread.yaml"
     shell:
-        "gffread {input} --table gene_biotype,gene_id | grep rRNA | cut -f 2 | sort -u 1> {output} 2> {log}"
+        "gffread {input} --table gene_biotype,gene_id | grep rRNA | cut -f 2 | sort -u > {output} 2> {log}"
