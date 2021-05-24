@@ -13,7 +13,7 @@ rule busparse_get_velocity_files:
                "results/busparse/get_velocity_files/{genome}/introns_tx_to_capture.txt",
                "results/busparse/get_velocity_files/{genome}/tr2g.tsv"]
     params:
-        chemistry = params["chemistry"],
+        chemistry = config["chemistry"],
         style = config["source"],
         out_path = "results/busparse/get_velocity_files/{genome}"
     log:

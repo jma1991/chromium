@@ -5,13 +5,13 @@
 
 rule genomepy_install:
     output:
-        "results/genomepy/{genome}.annotation.bed.gz",
-        "results/genomepy/{genome}.annotation.gtf.gz",
-        "results/genomepy/{genome}.fa",
-        "results/genomepy/{genome}.fa.fai",
-        "results/genomepy/{genome}.fa.sizes",
-        "results/genomepy/{genome}.gaps.bed",
-        "results/genomepy/README.txt"
+        "results/genomepy/{genome}/{genome}.annotation.bed.gz",
+        "results/genomepy/{genome}/{genome}.annotation.gtf.gz",
+        "results/genomepy/{genome}/{genome}.fa",
+        "results/genomepy/{genome}/{genome}.fa.fai",
+        "results/genomepy/{genome}/{genome}.fa.sizes",
+        "results/genomepy/{genome}/{genome}.gaps.bed",
+        "results/genomepy/{genome}/README.txt"
     params:
         "results/genomepy"
     log:

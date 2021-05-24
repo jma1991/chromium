@@ -22,11 +22,6 @@ Chromium is a Snakemake workflow to process 3' single cell RNA sequencing data f
 * [Alevin](https://doi.org/10.1186/s13059-019-1670-y)
 * [STARsolo](https://doi.org/10.1101/2021.05.05.442755)
 
-## Features
-
-- [] Hello
-- [] Goodbye
-
 ## Installation
 
 Chromium and all of its dependencies can be installed via the [mamba](https://github.com/mamba-org/mamba) package manager:
@@ -56,11 +51,6 @@ Chromium and all of its dependencies can be installed via the [mamba](https://gi
    ```
 
 ## Usage
-
-Chromium is typically executed
-
-
-
 
 1. Create workflow configuration
 

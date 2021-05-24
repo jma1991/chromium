@@ -1,6 +1,6 @@
 # Documentation <img align="right" width="160" src="../images/roundel.png">
 
-Welcome to the Chromium documentation!
+Welcome to the Chromium documentation
 
 ## Contents
 
@@ -8,6 +8,8 @@ Welcome to the Chromium documentation!
 * [Usage](#execution)
 * [Configuration](#configuration)
 * [Output](#results)
+* [Tests](#test)
+* [FAQ](#faq)
 * [References](#references)
 
 ## Introduction
@@ -16,8 +18,6 @@ Chromium is a Snakemake workflow to process single cell gene expression data
 from the 10x Genomics platfom.
 
 ## Usage
-
-### Run the workflow
 
 The workflow can be executed using the following command:
 
@@ -29,23 +29,6 @@ This will use all available cores and deploy software dependencies via the conda
 package manager. For further information, please refer to the official
 [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html)
 documentation.
-
-The workflow will generate all output files in the output directory:
-
-```console
-CODE_OF_CONDUCT.md
-CONTRIBUTING.md
-LICENSE.md
-README.md
-config
-images
-resources
-output   # hello
-workflow
-```
-
-
-
 
 ### Update the workflow
 
@@ -367,11 +350,11 @@ I would suggest there is no best workflow, each one captures a unique aspect of 
 
 #### What reference genomes are supported?
 
-The workflow uses `genomepy` and `gffread` to download and parse the user-specified reference genome and annotation. Theoretically, any genome release compatible with these software should be supported.
+The workflow uses genomepy and gffread to download and parse the user-specified reference genome and annotation. Therefore, any genome release compatible with these software should be supported.
 
 #### How do I combine multiple sequencing runs?
 
-If the sequencing runs were performed across multiple lanes on the same date, it is unlikely that a batch effect is present and I would recommend quantifying the files all together. Below is an example of how to specify multiple sequencing runs jointly for a given sample: 
+If the sequencing runs were performed across multiple lanes on the same date, it is unlikely that a batch effect is present and I would recommend quantifying the files all together. Below is an example units table showing how to specify multiple sequencing runs jointly for a given sample: 
 
 ```
 sample,unit,read1,read2
@@ -379,7 +362,7 @@ S1,L001,S1_L001.fastq.gz,S1_L001.fastq.gz
 S1,L002,S1_L002.fastq.gz,S1_L002.fastq.gz
 ```
 
-Alternatively, if the sequencing runs were performed on different machines and different dates, there is potential for a batch effect and I would recommend quantifying the files separately until this can be investigated. Below is an example of how to specify multiple sequencing runs independently for a given sample:
+Alternatively, if the sequencing runs were performed on different machines and different dates, there is potential for a batch effect and I would recommend quantifying the files separately until this can be investigated. Below is an example units table showing how to specify multiple sequencing runs independently for a given sample:
 
 ```
 sample,unit,read1,read2

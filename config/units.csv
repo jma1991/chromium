@@ -1,5 +1,5 @@
 sample,unit,read1,read2
-S1,L001,/Users/james/GitHub/scrnaseq/.tests/fastq/S1_L001_R1_001.fastq.gz,/Users/james/GitHub/scrnaseq/.tests/fastq/S1_L001_R2_001.fastq.gz
-S1,L002,/Users/james/GitHub/scrnaseq/.tests/fastq/S1_L002_R1_001.fastq.gz,/Users/james/GitHub/scrnaseq/.tests/fastq/S1_L002_R2_001.fastq.gz
-S1,L003,/Users/james/GitHub/scrnaseq/.tests/fastq/S1_L003_R1_001.fastq.gz,/Users/james/GitHub/scrnaseq/.tests/fastq/S1_L003_R2_001.fastq.gz
-S1,L004,/Users/james/GitHub/scrnaseq/.tests/fastq/S1_L004_R1_001.fastq.gz,/Users/james/GitHub/scrnaseq/.tests/fastq/S1_L004_R2_001.fastq.gz
+S1,L001,/Users/james/GitHub/chromium/.tests/fastq/S1_L001_R1_001.fastq.gz,/Users/james/GitHub/chromium/.tests/fastq/S1_L001_R2_001.fastq.gz
+S1,L002,/Users/james/GitHub/chromium/.tests/fastq/S1_L002_R1_001.fastq.gz,/Users/james/GitHub/chromium/.tests/fastq/S1_L002_R2_001.fastq.gz
+S1,L003,/Users/james/GitHub/chromium/.tests/fastq/S1_L003_R1_001.fastq.gz,/Users/james/GitHub/chromium/.tests/fastq/S1_L003_R2_001.fastq.gz
+S1,L004,/Users/james/GitHub/chromium/.tests/fastq/S1_L004_R1_001.fastq.gz,/Users/james/GitHub/chromium/.tests/fastq/S1_L004_R2_001.fastq.gz

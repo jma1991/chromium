@@ -1,3 +1,8 @@
+# Author: James Ashmore
+# Copyright: Copyright 2020, James Ashmore
+# Email: jashmore@ed.ac.uk
+# License: MIT
+
 def salmon_alevin_params(wildcards):
 
     d = {
@@ -46,7 +51,7 @@ def star_align_params(wildcards):
         "10xv1": {
             "sjdbOverhang": 97,
             "soloCBstart": 1,
-            "soloCBLen": 14,
+            "soloCBlen": 14,
             "soloUMIstart": 15,
             "soloUMIlen": 10,
             "soloBarcodeReadLength": 24
@@ -54,7 +59,7 @@ def star_align_params(wildcards):
         "10xv2": {
             "sjdbOverhang": 97,
             "soloCBstart": 1,
-            "soloCBLen": 16,
+            "soloCBlen": 16,
             "soloUMIstart": 17,
             "soloUMIlen": 10,
             "soloBarcodeReadLength": 26
@@ -62,7 +67,7 @@ def star_align_params(wildcards):
         "10xv3": {
             "sjdbOverhang": 90,
             "soloCBstart": 1,
-            "soloCBLen": 16,
+            "soloCBlen": 16,
             "soloUMIstart": 17,
             "soloUMIlen": 12,
             "soloBarcodeReadLength": 28

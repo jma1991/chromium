@@ -5,7 +5,7 @@
 
 rule bustools_correct:
     input:
-        txt = "resources/barcodes/{chemistry}.txt", chemistry = config["chemistry"]),
+        txt = expand("resources/barcodes/{chemistry}.txt", chemistry = config["chemistry"]),
         bus = "results/kallisto/bus/{sample}/output.bus"
     output:
         bus = "results/bustools/correct/{sample}/output.bus"
