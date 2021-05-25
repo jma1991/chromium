@@ -77,7 +77,7 @@ rule bustools_count_spliced:
     log:
         log = "results/bustools/count/{sample}/spliced.log"
     params:
-        out = "results/bustools/count/{sample}/spliced"
+        out = lambda wildcards, output: output[0].rsplit('.')[0]
     message:
         "[bustools] Generate spliced count matrix from BUS file"
     conda:
@@ -96,7 +96,7 @@ rule bustools_count_unspliced:
     log:
         log = "results/bustools/count/{sample}/unspliced.log"
     params:
-        out = "results/bustools/count/{sample}/unspliced"
+        out = lambda wildcards, output: output[0].rsplit('.')[0]
     message:
         "[bustools] Generate unspliced count matrix from BUS file"
     conda:

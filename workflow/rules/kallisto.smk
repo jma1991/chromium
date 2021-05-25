@@ -31,7 +31,7 @@ rule kallisto_bus:
                "results/kallisto/bus/{sample}/run_info.json",
                "results/kallisto/bus/{sample}/transcripts.txt"]
     params:
-        out = "results/kallisto/bus/{sample}",
+        out = lambda wildcards, output: os.path.dirname(output[0]),
         ver = config["chemistry"],
         fqz = lambda wildcards, input: [j for i in zip(input.fq1, input.fq2) for j in i]
     log:

@@ -15,7 +15,7 @@ rule busparse_get_velocity_files:
     params:
         chemistry = config["chemistry"],
         style = config["source"],
-        out_path = "results/busparse/get_velocity_files/{genome}"
+        out_path = lambda wildcards, output: os.path.dirname(output[0])
     log:
         out = "results/busparse/get_velocity_files/{genome}/log.out",
         err = "results/busparse/get_velocity_files/{genome}/log.err"
