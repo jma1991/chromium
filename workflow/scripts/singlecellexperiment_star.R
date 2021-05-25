@@ -103,7 +103,7 @@ main <- function(input, output, params, log, wildcards) {
         ),
         
         colData = S4Vectors::DataFrame(
-            Sample = wildcards$sample_name,
+            Sample = wildcards$sample,
             Barcode = barcodes$id
         )
     

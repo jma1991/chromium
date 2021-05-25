@@ -43,7 +43,7 @@ main <- function(input, output, log, wildcards) {
         ),
         
         colData = DataFrame(
-            Sample = wildcards$sample_name,
+            Sample = wildcards$sample,
             Barcode = dim$j
         )
     )

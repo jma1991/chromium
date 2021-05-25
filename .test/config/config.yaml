@@ -8,6 +8,6 @@ organism: Homo sapiens
 
 release: 101
 
-genome: GRCh38.p13
+genome: GRCh38
 
 chemistry: 10xv3

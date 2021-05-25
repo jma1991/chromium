@@ -43,7 +43,7 @@ rule gffread_mrna:
     conda:
         "../envs/gffread.yaml"
     shell:
-        "gffread {input} --table @chr,gene_id | grep MT | cut -f 2 | sort -u > {output} 2> {log}"
+        "gffread {input} --table @chr,gene_id | awk '$1 == MT' | cut -f 2 | sort -u > {output} 2> {log}"
 
 rule gffread_rrna:
     input:
@@ -57,4 +57,4 @@ rule gffread_rrna:
     conda:
         "../envs/gffread.yaml"
     shell:
-        "gffread {input} --table gene_biotype,gene_id | grep rRNA | cut -f 2 | sort -u > {output} 2> {log}"
+        "gffread {input} --table gene_biotype,gene_id | awk '$1 == rRNA' | cut -f 2 | sort -u > {output} 2> {log}"

@@ -28,6 +28,8 @@ rule singlecellexperiment_salmon:
                expand("results/gffread/{genome}/{genome}.id2name.tsv", genome = config["genome"])]
     output:
         rds = "results/singlecellexperiment/salmon/{sample}.rds"
+    params:
+        out = "results/salmon/alevin/{sample}"
     log:
         out = "results/singlecellexperiment/salmon/{sample}.out",
         err = "results/singlecellexperiment/salmon/{sample}.err"

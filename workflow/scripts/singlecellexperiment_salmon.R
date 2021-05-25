@@ -30,7 +30,7 @@ main <- function(input, output, log, wildcards) {
 
     # Import salmon quantification
 
-    con <- file.path(input$dir, wildcards$sample_name, "alevin", "quants_mat.gz")
+    con <- file.path(input$dir, wildcards$sample, "alevin", "quants_mat.gz")
 
     txi <- tximport(con, type = "alevin", dropInfReps = FALSE)
     
@@ -64,7 +64,7 @@ main <- function(input, output, log, wildcards) {
             Symbol = ann$name
         ),
         colData = DataFrame(
-            Sample = wildcards$sample_name,
+            Sample = wildcards$sample,
             Barcode = colnames(rse)
         )
     )
