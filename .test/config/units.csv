@@ -1,0 +1,5 @@
+sample,unit,read1,read2
+S1,L001,data/reads/S1_L001_R1_001.fastq.gz,data/reads/S1_L001_R2_001.fastq.gz
+S1,L002,data/reads/S1_L002_R1_001.fastq.gz,data/reads/S1_L002_R2_001.fastq.gz
+S1,L003,data/reads/S1_L003_R1_001.fastq.gz,data/reads/S1_L003_R2_001.fastq.gz
+S1,L004,data/reads/S1_L004_R1_001.fastq.gz,data/reads/S1_L004_R2_001.fastq.gz

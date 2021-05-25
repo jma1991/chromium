@@ -1,0 +1,32 @@
+$schema: http://json-schema.org/draft-07/schema#
+
+description: Snakemake configuration file
+
+type: object
+
+properties:
+  samples:
+    type: string
+  units:
+    type: string
+  source:
+    type: string
+    enum: [Ensembl, UCSC]
+  organism:
+    type: string
+  release:
+    type: integer
+  genome:
+    type: string
+  chemistry:
+    type: string
+    enum: [10xv2, 10xv3]
+
+required:
+  - samples
+  - units
+  - source
+  - organism
+  - release
+  - genome
+  - chemistry
