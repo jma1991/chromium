@@ -9,6 +9,9 @@
 !.test/*
 !.test/config/*
 !.test/data/*
+!.test/data/genes/*
+!.test/data/genome/*
+!.test/data/samples/*
 !CODE_OF_CONDUCT.md
 !CONTRIBUTING.md
 !LICENSE.md
