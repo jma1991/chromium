@@ -28,13 +28,11 @@ rule singlecellexperiment_salmon:
                expand("results/gffread/{genome}/{genome}.id2name.tsv", genome = config["genome"])]
     output:
         rds = "results/singlecellexperiment/salmon/{sample}.rds"
-    params:
-        out = "results/salmon/alevin/{sample}"
     log:
         out = "results/singlecellexperiment/salmon/{sample}.out",
         err = "results/singlecellexperiment/salmon/{sample}.err"
     message:
-        "[singlecellexperiment] Create a SingleCellExperiment object from Salmon output directory: {params.out}"
+        "[singlecellexperiment] Create a SingleCellExperiment object from Salmon output directory: {input.dir}"
     conda:
         "../envs/singlecellexperiment.yaml"
     script:
