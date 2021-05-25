@@ -4,6 +4,7 @@
 !.gitattributes
 !.github
 !.gitignore
+!.snakemake-workflow-catalog.yml
 !.test
 !.test/*
 !.test/config/*
