@@ -28,6 +28,8 @@ rule genomepy_gunzip:
         "results/genomepy/{genome}/{genome}.annotation.{ext}.gz"
     output:
         "results/genomepy/{genome}/{genome}.annotation.{ext}"
+    log:
+        "results/genomepy/{genome}/{genome}.annotation.{ext}.log"
     message:
         "[genomepy] Extract reference annotation: {input}"
     conda:

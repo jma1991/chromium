@@ -1,0 +1,7 @@
+name: curl
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - curl

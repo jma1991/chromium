@@ -30,6 +30,9 @@ rule singlecellexperiment_salmon:
         rds = "results/singlecellexperiment/salmon/{sample}.rds"
     params:
         out = "results/salmon/alevin/{sample}"
+    log:
+        out = "results/singlecellexperiment/salmon/{sample}.out",
+        err = "results/singlecellexperiment/salmon/{sample}.err"
     message:
         "[singlecellexperiment] Create a SingleCellExperiment object from Salmon output directory: {params.out}"
     conda:

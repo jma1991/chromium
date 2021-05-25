@@ -9,16 +9,24 @@ rule salmon_gentrome:
         "results/genomepy/{genome}/{genome}.fa"
     output:
         "results/salmon/genome/{genome}/gentrome.fa"
+    log:
+        "results/salmon/genome/{genome}/gentrome.log"
+    conda:
+        "../envs/salmon.yaml"
     shell:
-        "cat {input} > {output}"
+        "cat {input} > {output} 2> {log}"
 
 rule salmon_decoys:
     input:
         "results/genomepy/{genome}/{genome}.fa.fai"
     output:
         "results/salmon/genome/{genome}/decoys.txt"
+    log:
+        "results/salmon/genome/{genome}/decoys.log"
+    conda:
+        "../envs/salmon.yaml"
     shell:
-        "cut -f 1 {input} > {output}"
+        "cut -f 1 {input} > {output} 2> {log}"
 
 rule salmon_index:
     input:
