@@ -1,0 +1,13 @@
+samples: config/samples.csv
+
+units: config/units.csv
+
+source: Ensembl
+
+organism: Homo sapiens
+
+release: 101
+
+genome: GRCh38.p13
+
+chemistry: 10xv3

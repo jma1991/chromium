@@ -128,7 +128,7 @@ If you would like to be added to this list, please open a [pull request](https:/
 
 ## Citation
 
-If you use Chromium in your research, please cite using https://zenodo.org/badge/latestdoi/287750880
+If you use Chromium in your research, please cite using the DOI: [10.5281/zenodo.4783308](https://doi.org/10.5281/zenodo.4783309)
 
 ## Used By
 
