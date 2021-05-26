@@ -3,14 +3,6 @@
 # Email: jashmore@ed.ac.uk
 # License: MIT
 
-TMPFUN <- function(x) {
-
-    library(GenomicFeatures)
-
-    x[all(seqnames(x) %in% "X")]
-
-}
-
 main <- function(input, output, params, log) {
 
     # Log function
@@ -37,8 +29,6 @@ main <- function(input, output, params, log) {
         joinOverlappingIntrons = FALSE,
         verbose = TRUE
     )
-
-    grl <- TMPFUN(grl)
 
     saveRDS(grl, file = output$rds)
 

@@ -5,4 +5,7 @@ channels:
   - defaults
 dependencies:
   - bioconductor-singlecellexperiment
+  - bioconductor-summarizedexperiment
+  - bioconductor-tximport
+  - bioconductor-tximeta
   - r-data.table
