@@ -2,12 +2,12 @@ samples: config/samples.csv
 
 units: config/units.csv
 
-source: UCSC
+source: Ensembl
 
-organism: Mus musculus
+organism: Homo sapiens
 
 release: 104
 
-genome: GRCm38.p6
+genome: GRCh38.p13
 
-chemistry: 10xv2
+chemistry: 10xv3

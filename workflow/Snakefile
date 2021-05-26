@@ -37,6 +37,6 @@ include: "rules/star.smk"
 
 rule all:
     input:
-        "results/singlecellexperiment/kallisto/S10.rds",
-        "results/singlecellexperiment/salmon/S10.rds",
-        "results/singlecellexperiment/star/S10.rds"
+        "results/singlecellexperiment/kallisto/S1.rds",
+        "results/singlecellexperiment/salmon/S1.rds",
+        "results/singlecellexperiment/star/S1.rds"
