@@ -35,8 +35,10 @@ include: "rules/salmon.smk"
 include: "rules/singlecellexperiment.smk"
 include: "rules/star.smk"
 
+ALIGNERS = ["kallisto", "salmon", "star"]
+
+SAMPLES = samples["sample"]
+
 rule all:
     input:
-        "results/singlecellexperiment/kallisto/S1.rds",
-        "results/singlecellexperiment/salmon/S1.rds",
-        "results/singlecellexperiment/star/S1.rds"
+        expand("results/singlecellexperiment/{aligner}/{sample}.rds", aligner = ALIGNERS, sample = SAMPLES)
